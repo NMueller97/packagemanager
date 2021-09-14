@@ -14,6 +14,7 @@ class RemoteAndroidPackage(
 ) : AndroidPackage {
 
     override var paths = listOf<Path>()
+    override val detailsAvailable = true
     override val downloadable = true
 
     override suspend fun refreshInstallLocation() {

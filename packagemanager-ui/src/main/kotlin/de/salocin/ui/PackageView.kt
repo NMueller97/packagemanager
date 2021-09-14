@@ -9,7 +9,7 @@ class PackageView(coroutineScope: CoroutineScope) : CoroutineView(coroutineScope
 
     private val toolbar = ToolbarView(coroutineScope)
     private val list = PackageListView(coroutineScope, toolbar.selectedDevice)
-    private val details = PackageDetailsView()
+    private val details = PackageDetailsView(coroutineScope, list.selectedPackage)
 
     override val root = BorderPane().apply {
         top = toolbar.root

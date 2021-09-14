@@ -10,6 +10,8 @@ interface AndroidPackage {
 
     val paths: List<Path>
 
+    val detailsAvailable: Boolean
+
     val downloadable: Boolean
 
     suspend fun refreshInstallLocation()

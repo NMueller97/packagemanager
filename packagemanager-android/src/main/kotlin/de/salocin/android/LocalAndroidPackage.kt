@@ -1,4 +1,4 @@
-package de.salocin.api
+package de.salocin.android
 
 interface LocalAndroidPackage : AndroidPackage {
 }

@@ -1,16 +1,21 @@
-package de.salocin.util
+package de.salocin.utils
 
 import javafx.beans.WeakListener
 import javafx.collections.ListChangeListener
 import javafx.collections.ObservableList
 import java.lang.ref.WeakReference
 
-class ListContentMapping<S, T>(
-    target: ObservableList<T>,
+class ListMappedBinding<S, T>(
+    source: ObservableList<S>,
+    target: MutableList<T>,
     private val mapper: (S) -> T
 ) : ListChangeListener<S>, WeakListener {
 
-    private val weakReference: WeakReference<ObservableList<T>> = WeakReference(target)
+    private val weakReference: WeakReference<MutableList<T>> = WeakReference(target)
+
+    init {
+        source.addListener(this)
+    }
 
     override fun onChanged(change: ListChangeListener.Change<out S>?) {
         val target = weakReference.get()
@@ -40,7 +45,7 @@ class ListContentMapping<S, T>(
         }
     }
 
-    override fun wasGarbageCollected(): Boolean = weakReference.get() != null
+    override fun wasGarbageCollected(): Boolean = weakReference.get() == null
 
     override fun hashCode(): Int {
         return weakReference.get()?.hashCode() ?: 0
@@ -54,7 +59,7 @@ class ListContentMapping<S, T>(
             wasGarbageCollected() -> {
                 false
             }
-            other is ListContentMapping<*, *> -> {
+            other is ListMappedBinding<*, *> -> {
                 weakReference === other.weakReference
             }
             else -> {
@@ -62,5 +67,4 @@ class ListContentMapping<S, T>(
             }
         }
     }
-
 }

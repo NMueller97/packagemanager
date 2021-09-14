@@ -1,4 +1,4 @@
-package de.salocin.parser
+package de.salocin.android.parser
 
 object PlainOutputParser : LineOutputParser<String> {
 

@@ -1,4 +1,4 @@
-package de.salocin.parser
+package de.salocin.android.parser
 
 class ParserMapping<S, T>(
     private val source: LineOutputParser<S>,

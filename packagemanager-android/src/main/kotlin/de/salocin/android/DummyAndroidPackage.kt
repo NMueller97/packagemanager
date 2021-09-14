@@ -1,19 +1,14 @@
-package de.salocin.api
+package de.salocin.android
 
-import de.salocin.android.AndroidPackageType
-import de.salocin.task.Task
-import javafx.collections.FXCollections
-import javafx.collections.ObservableList
-import tornadofx.objectProperty
-import tornadofx.stringProperty
 import java.nio.file.Path
 
-class DummyAndroidPackage(name: String) : AndroidPackage {
+class DummyAndroidPackage(override val name: String) : AndroidPackage {
 
-    override val nameProperty = stringProperty(name)
-    override val typeProperty = objectProperty(AndroidPackageType.UNKNOWN)
-    override val installLocation: ObservableList<Path> = FXCollections.emptyObservableList()
+    override val type = AndroidPackageType.UNKNOWN
+    override val paths: List<Path> = emptyList()
     override val downloadable = false
 
-    override fun refreshInstallLocationAsync() = Task.completed(installLocation)
+    override suspend fun refreshInstallLocation() {
+        // nothing to do
+    }
 }

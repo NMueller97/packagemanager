@@ -18,15 +18,15 @@ javafx {
 }
 
 application {
-    mainClass.set("de.salocin.Main")
+    mainClass.set("de.salocin.ui.Main")
 }
 
 dependencies {
     api(project(":packagemanager-android"))
-
     implementation(kotlin("stdlib"))
     implementation(kotlin("reflect"))
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-javafx:1.5.2")
     implementation(group = "org.slf4j", name = "slf4j-simple", version = "1.7.26")
-    implementation(group = "no.tornado", name = "tornadofx", version = "1.7.20")
     implementation(group = "org.controlsfx", name = "controlsfx", version = "11.1.0")
 }

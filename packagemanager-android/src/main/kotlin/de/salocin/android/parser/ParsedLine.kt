@@ -1,4 +1,4 @@
-package de.salocin.parser
+package de.salocin.android.parser
 
 @JvmInline
 value class ParsedLine(val value: List<String>) {

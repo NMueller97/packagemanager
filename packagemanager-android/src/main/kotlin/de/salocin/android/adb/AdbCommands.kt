@@ -1,11 +1,8 @@
-package de.salocin.adb
+package de.salocin.android.adb
 
-import de.salocin.android.adb.AdbCommand
-import de.salocin.android.adb.AdbCommandBuilder
-import de.salocin.device.AndroidDevice
-import de.salocin.device.SimpleAndroidDevice
-import de.salocin.parser.LineOutputParser
-import de.salocin.parser.RegexOutputParser
+import de.salocin.android.AndroidDevice
+import de.salocin.android.RemoteAndroidDevice
+import de.salocin.android.parser.RegexOutputParser
 import java.nio.file.Path
 
 object AdbCommands {
@@ -15,21 +12,23 @@ object AdbCommands {
 
     val devicesCommand: AdbCommand<AndroidDevice> = AdbCommandBuilder("devices")
         .resolve("-l")
-        .build(RegexOutputParser(devicesRegex)
-            .takeAllGroups()
-            .mapEachLineTo { SimpleAndroidDevice(it[0], it[1]) })
+        .build(
+            RegexOutputParser(devicesRegex)
+                .takeAllGroups()
+                .mapEachLineTo { RemoteAndroidDevice(it[0], it[1]) })
 
     object PackageManager {
 
         private val stripPackagePrefixRegex = Regex("^package:(.+)$")
         private val packagesRegex = Regex("^package:(.+)=(.+)$")
-        private val stripPackagePrefix: LineOutputParser<Path> =
+        private val stripPackagePrefix =
             RegexOutputParser(stripPackagePrefixRegex).takeGroup(1).mapEachLineTo { Path.of(it) }
-        private val pmBaseCommand = shellBaseCommand.resolve("pm")
-        private val pathBaseCommand = pmBaseCommand.resolve("path")
+        private val pmBaseCommand = shellBaseCommand + "pm"
+        private val pathBaseCommand = pmBaseCommand + "path"
+        private val listPackagesCommand = pmBaseCommand + "list" + "packages" + "-f"
 
-        val packagesCommand = pmBaseCommand.resolve("list").resolve("packages").resolve("-f")
-            .build(RegexOutputParser(packagesRegex).takeAllGroups())
+        val packagesCommand =
+            listPackagesCommand.build(RegexOutputParser(packagesRegex).takeAllGroups())
 
         fun pathCommand(packageName: String): AdbCommand<Path> =
             pathBaseCommand.resolve(packageName).build(stripPackagePrefix)

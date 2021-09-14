@@ -1,7 +1,7 @@
 package de.salocin.android.adb
 
-import de.salocin.parser.LineOutputParser
-import de.salocin.parser.PlainOutputParser
+import de.salocin.android.parser.LineOutputParser
+import de.salocin.android.parser.PlainOutputParser
 import java.io.PrintStream
 
 class AdbCommandBuilder private constructor(private val subcommands: ArrayDeque<String>) {
@@ -27,10 +27,14 @@ class AdbCommandBuilder private constructor(private val subcommands: ArrayDeque<
         return this
     }
 
-    fun resolve(subcommand: String): AdbCommandBuilder {
+    infix fun resolve(subcommand: String): AdbCommandBuilder {
         val newArrayDeque = ArrayDeque(subcommands)
         newArrayDeque.addLast(subcommand)
         return AdbCommandBuilder(newArrayDeque)
+    }
+
+    operator fun plus(subcommand: String): AdbCommandBuilder {
+        return resolve(subcommand)
     }
 
     fun build(): AdbCommand<String> = build(PlainOutputParser)

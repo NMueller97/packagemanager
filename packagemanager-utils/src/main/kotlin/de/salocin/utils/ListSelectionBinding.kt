@@ -1,4 +1,4 @@
-package de.salocin.util
+package de.salocin.utils
 
 import javafx.beans.binding.ListBinding
 import javafx.beans.value.ObservableValue

@@ -1,4 +1,4 @@
-package de.salocin.parser
+package de.salocin.android.parser
 
 class RegexOutputParser(private val regex: Regex) : LineOutputParser<List<String>> {
 

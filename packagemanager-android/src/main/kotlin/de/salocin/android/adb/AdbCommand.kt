@@ -1,11 +1,8 @@
 package de.salocin.android.adb
 
-import de.salocin.parser.LineOutputParser
-import de.salocin.task.Task
-import de.salocin.task.TaskFailedException
-import javafx.application.Platform
-import javafx.collections.FXCollections
-import javafx.collections.ObservableList
+import de.salocin.android.parser.LineOutputParser
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runInterruptible
 import java.io.InputStreamReader
 import java.io.PrintStream
 
@@ -17,56 +14,30 @@ class AdbCommand<T>(
     private val stderrPrinter: PrintStream?
 ) {
 
-    @Throws(TaskFailedException::class)
-    fun executeAwait(): ObservableList<T> = with(FXCollections.observableArrayList<T>()) {
-        executeAwait {
-            add(it)
-        }
+    suspend fun execute(): List<T> {
+        return runInterruptible(Dispatchers.IO) {
+            val parsedLines = mutableListOf<T>()
 
-        this
-    }
+            commandPrinter?.println(arguments.joinToString(" "))
 
-    @Throws(TaskFailedException::class)
-    fun executeAwait(parsedLineCallback: (T) -> Unit) = Task.runAwait(arguments.joinToString(" ")) {
-        val process = ProcessBuilder(arguments).start()
-        commandPrinter?.println(arguments.joinToString(" "))
+            val process = ProcessBuilder(arguments).start()!!
 
-        InputStreamReader(process.inputStream).useLines { lines ->
-            lines.forEach { line ->
-                stdoutPrinter?.println(line)
-                outputParser.parseLine(line)?.let { parsedLine ->
-                    parsedLineCallback(parsedLine)
+            InputStreamReader(process.inputStream).useLines { lines ->
+                lines.forEach { line ->
+                    stdoutPrinter?.println(line)
+                    outputParser.parseLine(line)?.let { parsedLine ->
+                        parsedLines += parsedLine
+                    }
                 }
             }
-        }
 
-        InputStreamReader(process.errorStream).useLines { lines ->
-            lines.forEach { line ->
-                stderrPrinter?.println(line)
-            }
-        }
-    }
-
-    fun <V> executeAsync(thenRun: (ObservableList<T>) -> V): Task<V> = Task.runAsync {
-        executeAwait()
-    }.thenRun(thenRun)
-
-    fun executeAsync(observableList: ObservableList<T>): Task<ObservableList<T>> =
-        executeAsync(observableList) { it }
-
-    fun <V> executeAsync(
-        observableList: ObservableList<V>,
-        mapper: (T) -> V
-    ): Task<ObservableList<V>> {
-        observableList.clear()
-
-        return Task.runAsync {
-            executeAwait { value ->
-                Platform.runLater {
-                    observableList.add(mapper(value))
+            InputStreamReader(process.errorStream).useLines { lines ->
+                lines.forEach { line ->
+                    stderrPrinter?.println(line)
                 }
             }
-            observableList
+
+            return@runInterruptible parsedLines
         }
     }
 }

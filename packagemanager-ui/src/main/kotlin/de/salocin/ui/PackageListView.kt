@@ -49,7 +49,7 @@ class PackageListView(
         placeholder = ProgressIndicator()
     }
 
-    val selectedPackage = root.selectionModel.selectedItemProperty()
+    val selectedPackage = root.selectionModel.selectedItemProperty().mapTo { it?.value }
 
     init {
         selectedDevice.addListener { _, _, device ->

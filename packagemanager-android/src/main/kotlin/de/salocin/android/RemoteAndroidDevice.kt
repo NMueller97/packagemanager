@@ -49,6 +49,7 @@ class RemoteAndroidDevice(
         }
     }
 
-    override fun toString() = "$model ($serialNumber)"
-
+    override fun toString(): String {
+        return model
+    }
 }

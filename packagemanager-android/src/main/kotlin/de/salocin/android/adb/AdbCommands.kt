@@ -1,6 +1,7 @@
 package de.salocin.android.adb
 
 import de.salocin.android.AndroidDevice
+import de.salocin.android.AndroidFileSystem
 import de.salocin.android.RemoteAndroidDevice
 import de.salocin.android.parser.RegexOutputParser
 import java.nio.file.Path
@@ -22,7 +23,8 @@ object AdbCommands {
         private val stripPackagePrefixRegex = Regex("^package:(.+)$")
         private val packagesRegex = Regex("^package:(.+)=(.+)$")
         private val stripPackagePrefix =
-            RegexOutputParser(stripPackagePrefixRegex).takeGroup(1).mapEachLineTo { Path.of(it) }
+            RegexOutputParser(stripPackagePrefixRegex).takeGroup(1)
+                .mapEachLineTo { AndroidFileSystem.getPath(it) }
         private val pmBaseCommand = shellBaseCommand + "pm"
         private val pathBaseCommand = pmBaseCommand + "path"
         private val listPackagesCommand = pmBaseCommand + "list" + "packages" + "-f"

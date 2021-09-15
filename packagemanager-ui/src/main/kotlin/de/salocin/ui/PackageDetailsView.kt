@@ -9,7 +9,6 @@ import javafx.scene.layout.VBox
 import javafx.scene.text.Text
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import java.nio.file.Path
 
 class PackageDetailsView(
     coroutineScope: CoroutineScope,
@@ -17,7 +16,7 @@ class PackageDetailsView(
 ) : CoroutineView(coroutineScope) {
 
     private val nameTextField = PackageDetailsTextField("Name")
-    private val pathsList = PackageDetailsList<Path>("Paths")
+    private val pathsList = PackageDetailsPathList("Paths")
 
     private val content = VBox(nameTextField.root, pathsList.root).apply { isVisible = false }
     private val contentLoader = ProgressIndicator().apply { isVisible = false }

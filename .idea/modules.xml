@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/packagemanager.iml" filepath="$PROJECT_DIR$/.idea/modules/packagemanager.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/packagemanager-android/packagemanager.packagemanager-android.iml" filepath="$PROJECT_DIR$/.idea/modules/packagemanager-android/packagemanager.packagemanager-android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/packagemanager-android/packagemanager.packagemanager-android.main.iml" filepath="$PROJECT_DIR$/.idea/modules/packagemanager-android/packagemanager.packagemanager-android.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/packagemanager-android/packagemanager.packagemanager-android.test.iml" filepath="$PROJECT_DIR$/.idea/modules/packagemanager-android/packagemanager.packagemanager-android.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/packagemanager-ui/packagemanager.packagemanager-ui.iml" filepath="$PROJECT_DIR$/.idea/modules/packagemanager-ui/packagemanager.packagemanager-ui.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/packagemanager-ui/packagemanager.packagemanager-ui.main.iml" filepath="$PROJECT_DIR$/.idea/modules/packagemanager-ui/packagemanager.packagemanager-ui.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/packagemanager-ui/packagemanager.packagemanager-ui.test.iml" filepath="$PROJECT_DIR$/.idea/modules/packagemanager-ui/packagemanager.packagemanager-ui.test.iml" />
+    </modules>
+  </component>
+</project>

@@ -29,6 +29,5 @@ class FakeAndroidDevice(
         private const val SERIAL_NUMBER = "null"
 
         val noDevicesConnected = FakeAndroidDevice(SERIAL_NUMBER, "No devices connected")
-        val loadingDevices = FakeAndroidDevice(SERIAL_NUMBER, "Loading devices...")
     }
 }

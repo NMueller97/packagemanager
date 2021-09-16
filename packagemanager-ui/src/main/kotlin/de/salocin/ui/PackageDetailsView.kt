@@ -1,21 +1,25 @@
 package de.salocin.ui
 
 import de.salocin.android.AndroidPackage
+import javafx.application.HostServices
 import javafx.beans.value.ObservableValue
 import javafx.scene.control.ProgressIndicator
 import javafx.scene.control.TitledPane
 import javafx.scene.layout.StackPane
 import javafx.scene.layout.VBox
 import javafx.scene.text.Text
+import javafx.stage.Window
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 class PackageDetailsView(
     coroutineScope: CoroutineScope,
+    owner: Window,
+    hostServices: HostServices,
     selectedPackage: ObservableValue<AndroidPackage?>
 ) : CoroutineView(coroutineScope) {
 
-    private val buttons = PackageDetailsButtons()
+    private val buttons = PackageDetailsButtons(coroutineScope, owner, hostServices, selectedPackage)
     private val nameTextField = PackageDetailsTextField("Name")
     private val pathsList = PackageDetailsPathList("Paths")
 

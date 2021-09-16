@@ -4,7 +4,7 @@ import de.salocin.android.AndroidDevice
 import de.salocin.android.AndroidDeviceHolder
 import de.salocin.android.FakeAndroidDevice
 import de.salocin.ui.fontawesome.FA_SYNC
-import de.salocin.ui.fontawesome.FontAwesomeButton
+import de.salocin.ui.fontawesome.fontAwesomeButton
 import javafx.collections.FXCollections
 import javafx.scene.control.ComboBox
 import javafx.scene.control.ProgressIndicator
@@ -20,7 +20,7 @@ class ToolbarView(coroutineScope: CoroutineScope) : CoroutineView(coroutineScope
 
     val selectedDevice = devicesComboBox.selectionModel.selectedItemProperty()
 
-    private val refreshButton = FontAwesomeButton("Refresh", FA_SYNC).apply {
+    private val refreshButton = fontAwesomeButton("Refresh", FA_SYNC).apply {
         setOnAction {
             refreshDevicesJob()
         }

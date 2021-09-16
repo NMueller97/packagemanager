@@ -3,6 +3,7 @@ package de.salocin.ui
 import javafx.beans.binding.Binding
 import javafx.beans.binding.Bindings
 import javafx.beans.property.SimpleObjectProperty
+import javafx.beans.value.ObservableDoubleValue
 import javafx.beans.value.ObservableValue
 import javafx.beans.value.WritableValue
 import javafx.collections.FXCollections
@@ -17,6 +18,10 @@ fun <T : Any?> T.observable(): ObservableValue<T> = SimpleObjectProperty(this)
 fun <T : Any?> T.observableList(): ObservableList<T> = FXCollections.singletonObservableList(this)
 
 fun <T : Any?> List<T>.observableList(): ObservableList<T> = FXCollections.observableList(this)
+
+operator fun ObservableDoubleValue.getValue(thisRef: Any?, prop: KProperty<*>): Double {
+    return get()
+}
 
 operator fun <T : Any?> ObservableValue<T>.getValue(thisRef: Any?, prop: KProperty<*>): T {
     return value

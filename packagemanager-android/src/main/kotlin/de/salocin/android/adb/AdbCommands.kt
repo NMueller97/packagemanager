@@ -18,6 +18,12 @@ object AdbCommands {
                 .takeAllGroups()
                 .mapEachLineTo { RemoteAndroidDevice(it[0], it[1]) })
 
+    private val pullCommand = AdbCommandBuilder("pull") + "-a"
+
+    fun pull(androidPath: Path, target: Path): AdbCommand<String> {
+        return pullCommand.resolve(androidPath.toString()).resolve(target.toString()).build()
+    }
+
     object PackageManager {
 
         private val stripPackagePrefixRegex = Regex("^package:(.+)$")

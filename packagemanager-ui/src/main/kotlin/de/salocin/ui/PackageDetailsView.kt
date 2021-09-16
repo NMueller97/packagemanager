@@ -11,14 +11,15 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 class PackageDetailsView(
-    coroutineScope: CoroutineScope,
-    selectedPackage: ObservableValue<AndroidPackage?>
+        coroutineScope: CoroutineScope,
+        selectedPackage: ObservableValue<AndroidPackage?>
 ) : CoroutineView(coroutineScope) {
 
     private val nameTextField = PackageDetailsTextField("Name")
     private val pathsList = PackageDetailsPathList("Paths")
+    private val buttons = PackageDetailsButtons()
 
-    private val content = VBox(nameTextField.root, pathsList.root).apply { isVisible = false }
+    private val content = VBox(nameTextField.root, pathsList.root, buttons.root).apply { isVisible = false }
     private val contentLoader = ProgressIndicator().apply { isVisible = false }
     private val contentNoDetails = Text("No details for selected package")
     private val contentPane = StackPane(content, contentLoader, contentNoDetails)

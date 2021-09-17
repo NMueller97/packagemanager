@@ -1,5 +1,8 @@
-package de.salocin.ui
+package de.salocin.ui.dialog
 
+import de.salocin.android.progress.ProgressObserver
+import de.salocin.ui.getValue
+import de.salocin.ui.setValue
 import javafx.beans.property.SimpleDoubleProperty
 import javafx.scene.Scene
 import javafx.scene.control.ProgressBar
@@ -9,7 +12,7 @@ import javafx.stage.Modality
 import javafx.stage.Stage
 import javafx.stage.Window
 
-open class ProgressDialog(owner: Window) {
+open class ProgressDialog(owner: Window) : ProgressObserver {
 
     private val progressProperty = SimpleDoubleProperty(0.0)
     var progress: Double by progressProperty
@@ -39,7 +42,19 @@ open class ProgressDialog(owner: Window) {
         stage.show()
     }
 
-    fun close() {
+    override suspend fun notifyProgressChange(progress: Int) {
+        this.progress = progress.toDouble()
+    }
+
+    override suspend fun notifyMaxProgressChange(maxProgress: Int) {
+        this.maxProgress = maxProgress.toDouble()
+    }
+
+    override suspend fun notifyMessageChange(message: String) {
+        this.message = message
+    }
+
+    override suspend fun notifyFinish() {
         stage.close()
     }
 }

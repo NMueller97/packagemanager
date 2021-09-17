@@ -1,5 +1,6 @@
-package de.salocin.ui
+package de.salocin.ui.details
 
+import de.salocin.ui.View
 import javafx.scene.control.TextField
 import javafx.scene.layout.VBox
 import javafx.scene.text.Text

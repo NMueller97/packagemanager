@@ -1,5 +1,6 @@
-package de.salocin.android
+package de.salocin.android.device
 
+import de.salocin.android.progress.ProgressObserver
 import java.nio.file.Path
 
 class DummyAndroidPackage(override val name: String) : AndroidPackage {
@@ -10,6 +11,10 @@ class DummyAndroidPackage(override val name: String) : AndroidPackage {
     override val downloadable = false
 
     override suspend fun refreshInstallLocation() {
+        // nothing to do
+    }
+
+    override suspend fun download(target: Path, observer: ProgressObserver?) {
         // nothing to do
     }
 }

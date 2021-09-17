@@ -1,8 +1,8 @@
 package de.salocin.ui
 
-import de.salocin.android.AndroidDevice
-import de.salocin.android.AndroidPackage
-import de.salocin.android.DummyAndroidPackage
+import de.salocin.android.device.AndroidDevice
+import de.salocin.android.device.AndroidPackage
+import de.salocin.android.device.DummyAndroidPackage
 import javafx.beans.value.ObservableValue
 import javafx.scene.control.ProgressIndicator
 import javafx.scene.control.TreeItem

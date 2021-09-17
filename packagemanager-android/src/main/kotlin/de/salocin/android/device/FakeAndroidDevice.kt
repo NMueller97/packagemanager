@@ -1,4 +1,4 @@
-package de.salocin.android
+package de.salocin.android.device
 
 class FakeAndroidDevice(
     override val serialNumber: String,

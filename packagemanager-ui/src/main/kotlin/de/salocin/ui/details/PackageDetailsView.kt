@@ -1,6 +1,8 @@
-package de.salocin.ui
+package de.salocin.ui.details
 
-import de.salocin.android.AndroidPackage
+import de.salocin.android.device.AndroidPackage
+import de.salocin.ui.CoroutineView
+import de.salocin.ui.observableList
 import javafx.application.HostServices
 import javafx.beans.value.ObservableValue
 import javafx.scene.control.ProgressIndicator

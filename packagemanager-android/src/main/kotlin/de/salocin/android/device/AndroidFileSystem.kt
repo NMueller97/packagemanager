@@ -1,4 +1,4 @@
-package de.salocin.android
+package de.salocin.android.device
 
 import com.google.common.jimfs.Configuration
 import com.google.common.jimfs.Jimfs

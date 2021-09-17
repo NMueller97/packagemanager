@@ -1,8 +1,8 @@
 package de.salocin.android.adb
 
-import de.salocin.android.AndroidDevice
-import de.salocin.android.AndroidFileSystem
-import de.salocin.android.RemoteAndroidDevice
+import de.salocin.android.device.AndroidDevice
+import de.salocin.android.device.AndroidFileSystem
+import de.salocin.android.device.RemoteAndroidDevice
 import de.salocin.android.parser.RegexOutputParser
 import java.nio.file.Path
 

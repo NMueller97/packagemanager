@@ -1,5 +1,6 @@
 package de.salocin.ui
 
+import de.salocin.ui.details.PackageDetailsView
 import javafx.application.HostServices
 import javafx.geometry.Orientation
 import javafx.scene.control.SplitPane
@@ -13,7 +14,7 @@ class PackageView(
     hostServices: HostServices
 ) : CoroutineView(coroutineScope) {
 
-    private val toolbar = ToolbarView(coroutineScope)
+    private val toolbar = ToolbarView(coroutineScope, owner)
     private val list = PackageListView(coroutineScope, toolbar.selectedDevice)
     private val details = PackageDetailsView(coroutineScope, owner, hostServices, list.selectedPackage)
 

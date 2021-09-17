@@ -1,4 +1,4 @@
-package de.salocin.ui
+package de.salocin.ui.dialog
 
 import de.salocin.ui.fontawesome.FA_TIMES
 import de.salocin.ui.fontawesome.fontAwesomeButton

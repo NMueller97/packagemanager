@@ -1,5 +1,6 @@
-package de.salocin.ui
+package de.salocin.ui.details
 
+import de.salocin.ui.View
 import javafx.collections.ObservableList
 import javafx.scene.control.ListView
 import javafx.scene.layout.VBox

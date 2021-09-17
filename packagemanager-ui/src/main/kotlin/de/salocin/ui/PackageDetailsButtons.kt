@@ -13,8 +13,11 @@ import javafx.stage.FileChooser
 import javafx.stage.Window
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
@@ -35,11 +38,10 @@ class PackageDetailsButtons(
     private val selectedPackage: ObservableValue<AndroidPackage?>
 ) : CoroutineView(coroutineScope) {
 
-    private val downloadButton = fontAwesomeButton(title = "Download", icon = FA_DOWNLOAD).apply {
-        setOnAction {
-            coroutineScope.launch {
-                onDownload()
-            }
+    private val downloadButton = fontAwesomeButton(title = "Download", icon = FA_DOWNLOAD) {
+        val dialog = CancelableProgressDialog(owner)
+        dialog.cancelableJob = coroutineScope.launch {
+            onDownload(dialog)
         }
     }
 
@@ -48,7 +50,7 @@ class PackageDetailsButtons(
         padding = Insets(10.0)
     }
 
-    private suspend fun onDownload() {
+    private suspend fun onDownload(dialog: ProgressDialog) {
         val pack: AndroidPackage = selectedPackage.value ?: return
         pack.refreshInstallLocation()
 
@@ -67,7 +69,6 @@ class PackageDetailsButtons(
         }.showSaveDialog(owner)
 
         if (file != null) {
-            val dialog = ProgressDialog(owner)
             dialog.show()
             download(dialog, pack, file.toPath())
         }
@@ -80,38 +81,50 @@ class PackageDetailsButtons(
 
         val tempDir = tempDirectoryJob.await()
 
-        dialog.progress = 0.0
-        dialog.maxProgress = pack.paths.size.toDouble()
+        try {
+            dialog.progress = 0.0
+            dialog.maxProgress = pack.paths.size.toDouble()
 
-        for (source in pack.paths) {
-            dialog.message = "Downloading ${source.name}"
-            val tempTarget = tempDir.resolve(source.name)
-            AdbCommands.pull(source, tempTarget).execute()
-            dialog.progress++
-        }
-
-        dialog.message = "Packing downloaded files"
-
-        coroutineScope.launch(Dispatchers.IO) {
-            val entries = tempDir.listDirectoryEntries()
-
-            if (entries.size == 1) {
-                entries.first().moveTo(target, overwrite = true)
-            } else {
-                entries.zipTo(target)
+            for (source in pack.paths) {
+                dialog.message = "Downloading ${source.name}"
+                val tempTarget = tempDir.resolve(source.name)
+                AdbCommands.pull(source, tempTarget).execute()
+                dialog.progress++
             }
 
-            entries.forEach { entry ->
-                entry.deleteIfExists()
+            dialog.message = "Packing downloaded files"
+
+            val zipJob = coroutineScope.launch(Dispatchers.IO) {
+                val entries = tempDir.listDirectoryEntries()
+
+                if (entries.size == 1) {
+                    entries.first().moveTo(target, overwrite = true)
+                } else {
+                    entries.zipTo(target)
+                }
             }
 
-            tempDir.deleteIfExists()
-        }
+            zipJob.join()
+            hostServices.showDocument(target.parent.toUri().toString())
+        } finally {
+            withContext(NonCancellable) {
+                dialog.message = "Cleaning temporary files"
 
-        hostServices.showDocument(target.parent.toUri().toString())
-        dialog.setResult(Unit)
-        dialog.close()
-        TODO("Make cancelable")
+                delay(500L)
+
+                launch(Dispatchers.IO) {
+                    val entries = tempDir.listDirectoryEntries()
+
+                    entries.forEach { entry ->
+                        entry.deleteIfExists()
+                    }
+
+                    tempDir.deleteIfExists()
+                }
+
+                dialog.close()
+            }
+        }
     }
 
     private fun List<Path>.zipTo(target: Path) {

@@ -1,14 +1,15 @@
 package de.salocin.ui
 
 import javafx.beans.property.SimpleDoubleProperty
-import javafx.scene.control.Dialog
+import javafx.scene.Scene
 import javafx.scene.control.ProgressBar
 import javafx.scene.layout.VBox
 import javafx.scene.text.Text
 import javafx.stage.Modality
+import javafx.stage.Stage
 import javafx.stage.Window
 
-class ProgressDialog(owner: Window) : Dialog<Unit>() {
+open class ProgressDialog(owner: Window) {
 
     private val progressProperty = SimpleDoubleProperty(0.0)
     var progress: Double by progressProperty
@@ -24,9 +25,21 @@ class ProgressDialog(owner: Window) : Dialog<Unit>() {
     private val messageText = Text()
     var message: String by messageText.textProperty()
 
-    init {
+    protected val contentLayout = VBox(messageText, progressBar)
+
+    protected val stage = Stage().apply {
         initOwner(owner)
         initModality(Modality.WINDOW_MODAL)
-        dialogPane.content = VBox(messageText, progressBar)
+        scene = Scene(contentLayout)
+        contentLayout.autosize()
+        sizeToScene()
+    }
+
+    fun show() {
+        stage.show()
+    }
+
+    fun close() {
+        stage.close()
     }
 }

@@ -4,6 +4,7 @@ import de.salocin.android.progress.ProgressObserver
 import de.salocin.ui.getValue
 import de.salocin.ui.setValue
 import javafx.beans.property.SimpleDoubleProperty
+import javafx.geometry.Insets
 import javafx.scene.Scene
 import javafx.scene.control.ProgressBar
 import javafx.scene.layout.VBox
@@ -28,7 +29,9 @@ open class ProgressDialog(owner: Window) : ProgressObserver {
     private val messageText = Text()
     var message: String by messageText.textProperty()
 
-    protected val contentLayout = VBox(messageText, progressBar)
+    protected val contentLayout = VBox(10.0, messageText, progressBar).apply {
+        padding = Insets(10.0)
+    }
 
     protected val stage = Stage().apply {
         initOwner(owner)

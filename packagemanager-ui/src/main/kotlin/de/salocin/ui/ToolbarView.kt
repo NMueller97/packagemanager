@@ -10,6 +10,7 @@ import de.salocin.ui.fontawesome.FA_UPLOAD
 import de.salocin.ui.fontawesome.fontAwesomeButton
 import javafx.beans.value.ObservableValue
 import javafx.collections.FXCollections
+import javafx.geometry.Insets
 import javafx.scene.control.ComboBox
 import javafx.scene.control.ProgressIndicator
 import javafx.scene.layout.HBox
@@ -40,6 +41,7 @@ class ToolbarView(app: PackageManagerApplication, private val owner: Window) : A
 
     override val root = HBox().apply {
         spacing = 5.0
+        padding = Insets(10.0)
 
         children.add(devicesComboBox)
         children.add(refreshButton)
@@ -82,5 +84,6 @@ class ToolbarView(app: PackageManagerApplication, private val owner: Window) : A
     }
 
     private suspend fun install(dialog: ProgressDialog, target: Path) {
+        TODO("Install")
     }
 }

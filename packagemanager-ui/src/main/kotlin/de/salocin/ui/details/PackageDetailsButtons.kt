@@ -1,7 +1,8 @@
 package de.salocin.ui.details
 
 import de.salocin.android.device.AndroidPackage
-import de.salocin.ui.CoroutineView
+import de.salocin.ui.ApplicationView
+import de.salocin.ui.PackageManagerApplication
 import de.salocin.ui.dialog.CancelableProgressDialog
 import de.salocin.ui.dialog.ProgressDialog
 import de.salocin.ui.fontawesome.FA_DOWNLOAD
@@ -13,21 +14,20 @@ import javafx.geometry.Pos
 import javafx.scene.layout.HBox
 import javafx.stage.FileChooser
 import javafx.stage.Window
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.io.File
 import java.nio.file.Path
 
 class PackageDetailsButtons(
-    coroutineScope: CoroutineScope,
+    app: PackageManagerApplication,
     private val owner: Window,
     private val hostServices: HostServices,
     private val selectedPackage: ObservableValue<AndroidPackage?>
-) : CoroutineView(coroutineScope) {
+) : ApplicationView(app) {
 
     private val downloadButton = fontAwesomeButton(title = "Download", icon = FA_DOWNLOAD) {
         val dialog = CancelableProgressDialog(owner)
-        dialog.cancelableJob = coroutineScope.launch {
+        dialog.cancelableJob = app.launch {
             onDownload(dialog)
         }
     }

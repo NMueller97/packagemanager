@@ -1,6 +1,8 @@
 package de.salocin.ui.details
 
 import de.salocin.ui.View
+import de.salocin.ui.getValue
+import de.salocin.ui.setValue
 import javafx.scene.control.TextField
 import javafx.scene.layout.VBox
 import javafx.scene.text.Text

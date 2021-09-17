@@ -6,17 +6,16 @@ import javafx.geometry.Orientation
 import javafx.scene.control.SplitPane
 import javafx.scene.layout.BorderPane
 import javafx.stage.Window
-import kotlinx.coroutines.CoroutineScope
 
 class PackageView(
-    coroutineScope: CoroutineScope,
+    app: PackageManagerApplication,
     owner: Window,
     hostServices: HostServices
-) : CoroutineView(coroutineScope) {
+) : ApplicationView(app) {
 
-    private val toolbar = ToolbarView(coroutineScope, owner)
-    private val list = PackageListView(coroutineScope, toolbar.selectedDevice)
-    private val details = PackageDetailsView(coroutineScope, owner, hostServices, list.selectedPackage)
+    private val toolbar = ToolbarView(app, owner)
+    private val list = PackageListView(app, toolbar.selectedDevice)
+    private val details = PackageDetailsView(app, owner, hostServices, list.selectedPackage)
 
     override val root = BorderPane().apply {
         top = toolbar.root

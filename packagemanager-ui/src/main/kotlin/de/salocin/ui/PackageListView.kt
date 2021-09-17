@@ -9,14 +9,13 @@ import javafx.scene.control.TreeItem
 import javafx.scene.control.TreeTableColumn
 import javafx.scene.control.TreeTableView
 import javafx.util.Callback
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlin.reflect.KProperty1
 
 class PackageListView(
-    coroutineScope: CoroutineScope,
+    app: PackageManagerApplication,
     selectedDevice: ObservableValue<AndroidDevice>
-) : CoroutineView(coroutineScope) {
+) : ApplicationView(app) {
 
     private val rootItem = TreeItem<AndroidPackage>().apply {
         isExpanded = true
@@ -62,7 +61,7 @@ class PackageListView(
     }
 
     private fun refreshListJob(device: AndroidDevice) {
-        coroutineScope.launch {
+        app.launch {
             root.root = null
 
             device.refreshPackages()

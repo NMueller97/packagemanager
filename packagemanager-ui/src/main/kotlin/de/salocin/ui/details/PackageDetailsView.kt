@@ -1,7 +1,8 @@
 package de.salocin.ui.details
 
 import de.salocin.android.device.AndroidPackage
-import de.salocin.ui.CoroutineView
+import de.salocin.ui.ApplicationView
+import de.salocin.ui.PackageManagerApplication
 import de.salocin.ui.observableList
 import javafx.application.HostServices
 import javafx.beans.value.ObservableValue
@@ -11,17 +12,16 @@ import javafx.scene.layout.StackPane
 import javafx.scene.layout.VBox
 import javafx.scene.text.Text
 import javafx.stage.Window
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 class PackageDetailsView(
-    coroutineScope: CoroutineScope,
+    app: PackageManagerApplication,
     owner: Window,
     hostServices: HostServices,
     selectedPackage: ObservableValue<AndroidPackage?>
-) : CoroutineView(coroutineScope) {
+) : ApplicationView(app) {
 
-    private val buttons = PackageDetailsButtons(coroutineScope, owner, hostServices, selectedPackage)
+    private val buttons = PackageDetailsButtons(app, owner, hostServices, selectedPackage)
     private val nameTextField = PackageDetailsTextField("Name")
     private val pathsList = PackageDetailsPathList("Paths")
 
@@ -49,7 +49,7 @@ class PackageDetailsView(
     }
 
     private fun refreshDetailsJob(pack: AndroidPackage) {
-        coroutineScope.launch {
+        app.launch {
             contentLoader.isVisible = true
 
             pack.refreshInstallLocation()

@@ -15,12 +15,11 @@ import javafx.scene.control.ProgressIndicator
 import javafx.scene.layout.HBox
 import javafx.stage.FileChooser
 import javafx.stage.Window
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.io.File
 import java.nio.file.Path
 
-class ToolbarView(coroutineScope: CoroutineScope, private val owner: Window) : CoroutineView(coroutineScope) {
+class ToolbarView(app: PackageManagerApplication, private val owner: Window) : ApplicationView(app) {
 
     private val devicesComboBox = ComboBox<AndroidDevice>().apply {
         selectFirstWhenNoSelection()
@@ -34,7 +33,7 @@ class ToolbarView(coroutineScope: CoroutineScope, private val owner: Window) : C
 
     private val installButton = fontAwesomeButton("Install", FA_UPLOAD) {
         val dialog = CancelableProgressDialog(owner)
-        dialog.cancelableJob = coroutineScope.launch {
+        dialog.cancelableJob = app.launch {
             onInstall(dialog)
         }
     }
@@ -57,7 +56,7 @@ class ToolbarView(coroutineScope: CoroutineScope, private val owner: Window) : C
     }
 
     private fun refreshDevicesJob() {
-        coroutineScope.launch {
+        app.launch {
             devicesComboBox.items = null
             devicesComboBox.placeholder = ProgressIndicator()
             AndroidDeviceHolder.refreshDevices()

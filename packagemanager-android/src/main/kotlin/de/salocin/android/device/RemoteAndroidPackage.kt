@@ -41,7 +41,7 @@ class RemoteAndroidPackage(
                     observer?.notifyMessageChange("Downloading ${source.name}")
                     val tempTarget = directory.resolve(source.name)
                     AdbCommands.pull(source, tempTarget).execute()
-                    observer?.notifyProgressChange(progress++)
+                    observer?.notifyProgressChange(++progress)
                 }
 
                 observer?.notifyMessageChange("Packing downloaded files")

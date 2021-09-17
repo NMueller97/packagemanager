@@ -20,10 +20,8 @@ class ToolbarView(coroutineScope: CoroutineScope) : CoroutineView(coroutineScope
 
     val selectedDevice = devicesComboBox.selectionModel.selectedItemProperty()
 
-    private val refreshButton = fontAwesomeButton("Refresh", FA_SYNC).apply {
-        setOnAction {
-            refreshDevicesJob()
-        }
+    private val refreshButton = fontAwesomeButton("Refresh", FA_SYNC) {
+        refreshDevicesJob()
     }
 
     override val root = HBox().apply {

@@ -63,6 +63,7 @@ class PackageDetailsButtons(
 
     private suspend fun download(dialog: ProgressDialog, pack: AndroidPackage, target: Path) {
         pack.download(target, observer = dialog)
+        dialog.notifyFinish()
         hostServices.showDocument(target.parent.toUri().toString())
     }
 }

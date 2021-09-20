@@ -1,6 +1,7 @@
 package de.salocin.android.device
 
 import de.salocin.android.adb.AdbCommands
+import de.salocin.android.io.TemporaryDirectory
 import de.salocin.android.io.createTemporaryDirectory
 import de.salocin.android.io.zipTo
 import de.salocin.android.progress.ProgressObserver
@@ -32,36 +33,36 @@ class RemoteAndroidPackage(
 
     override suspend fun download(target: Path, observer: ProgressObserver?) {
         createTemporaryDirectory { directory ->
-            try {
-                var progress = 0
-                observer?.notifyProgressChange(progress)
-                observer?.notifyMaxProgressChange(paths.size)
+            downloadTo(directory, observer)
 
-                for (source in paths) {
-                    observer?.notifyMessageChange("Downloading ${source.name}")
-                    val tempTarget = directory.resolve(source.name)
-                    AdbCommands.pull(source, tempTarget).execute()
-                    observer?.notifyProgressChange(++progress)
-                }
+            observer?.notifyMessageChange("Packing downloaded files")
 
-                observer?.notifyMessageChange("Packing downloaded files")
+            coroutineScope {
+                val zipJob = launch(Dispatchers.IO) {
+                    val entries = directory.path.listDirectoryEntries()
 
-                coroutineScope {
-                    val zipJob = launch(Dispatchers.IO) {
-                        val entries = directory.listDirectoryEntries()
-
-                        if (entries.size == 1) {
-                            entries.first().moveTo(target, overwrite = true)
-                        } else {
-                            entries.zipTo(target)
-                        }
+                    if (entries.size == 1) {
+                        entries.first().moveTo(target, overwrite = true)
+                    } else {
+                        entries.zipTo(target)
                     }
-
-                    zipJob.join()
                 }
-            } finally {
-                observer?.notifyFinish()
+
+                zipJob.join()
             }
+        }
+    }
+
+    private suspend fun downloadTo(target: TemporaryDirectory, observer: ProgressObserver?) {
+        var progress = 0
+        observer?.notifyProgressChange(progress)
+        observer?.notifyMaxProgressChange(paths.size)
+
+        for (source in paths) {
+            observer?.notifyMessageChange("Downloading ${source.name}")
+            val tempTarget = target.path.resolve(source.name)
+            AdbCommands.pull(source, tempTarget).execute()
+            observer?.notifyProgressChange(++progress)
         }
     }
 }

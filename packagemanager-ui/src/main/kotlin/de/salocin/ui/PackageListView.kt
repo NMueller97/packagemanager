@@ -1,8 +1,9 @@
 package de.salocin.ui
 
-import de.salocin.android.device.AndroidDevice
-import de.salocin.android.device.AndroidPackage
-import de.salocin.android.device.DummyAndroidPackage
+import de.salocin.android.device.AndroidAppType
+import de.salocin.android.device.FakeAndroidApp
+import de.salocin.packagemanager.device.App
+import de.salocin.packagemanager.device.Device
 import javafx.beans.value.ObservableValue
 import javafx.scene.control.ProgressIndicator
 import javafx.scene.control.TreeItem
@@ -14,36 +15,36 @@ import kotlin.reflect.KProperty1
 
 class PackageListView(
     app: PackageManagerApplication,
-    selectedDevice: ObservableValue<AndroidDevice>
+    selectedDevice: ObservableValue<Device>
 ) : ApplicationView(app) {
 
-    private val rootItem = TreeItem<AndroidPackage>().apply {
+    private val rootItem = TreeItem<App>().apply {
         isExpanded = true
     }
 
     private val dataPackagesItem =
-        TreeItem<AndroidPackage>(DummyAndroidPackage("Data")).apply {
+        TreeItem<App>(FakeAndroidApp("Data")).apply {
             rootItem.children.add(this)
             isExpanded = true
         }
 
     private val systemPackagesItem =
-        TreeItem<AndroidPackage>(DummyAndroidPackage("System")).apply {
+        TreeItem<App>(FakeAndroidApp("System")).apply {
             rootItem.children.add(this)
         }
 
     private val vendorPackagesItem =
-        TreeItem<AndroidPackage>(DummyAndroidPackage("Vendor")).apply {
+        TreeItem<App>(FakeAndroidApp("Vendor")).apply {
             rootItem.children.add(this)
         }
 
     private val unknownPackagesItem =
-        TreeItem<AndroidPackage>(DummyAndroidPackage("Unknown")).apply {
+        TreeItem<App>(FakeAndroidApp("Unknown")).apply {
             rootItem.children.add(this)
         }
 
-    override val root = TreeTableView<AndroidPackage>().apply {
-        column("Name", AndroidPackage::name)
+    override val root = TreeTableView<App>().apply {
+        column("Name", App::name)
         columnResizePolicy = TreeTableView.CONSTRAINED_RESIZE_POLICY
         placeholder = ProgressIndicator()
     }
@@ -60,32 +61,33 @@ class PackageListView(
         }
     }
 
-    private fun refreshListJob(device: AndroidDevice) {
+    private fun refreshListJob(device: Device) {
         app.launch {
             root.root = null
 
-            device.refreshPackages()
-            dataPackagesItem.addPackages(device.dataPackages)
-            systemPackagesItem.addPackages(device.systemPackages)
-            vendorPackagesItem.addPackages(device.vendorPackages)
-            unknownPackagesItem.addPackages(device.unknownPackages)
+            device.refreshApps()
 
-            rootItem.value = DummyAndroidPackage(device.toString())
+            dataPackagesItem.addPackages(device.apps.filter { it.type == AndroidAppType.DATA })
+            systemPackagesItem.addPackages(device.apps.filter { it.type == AndroidAppType.SYSTEM })
+            vendorPackagesItem.addPackages(device.apps.filter { it.type == AndroidAppType.VENDOR })
+            unknownPackagesItem.addPackages(device.apps.filter { it.type == AndroidAppType.UNKNOWN })
+
+            rootItem.value = FakeAndroidApp(device.toString())
             root.root = rootItem
         }
     }
 
-    private fun <T : Any?> TreeTableView<AndroidPackage>.column(
+    private fun <T : Any?> TreeTableView<App>.column(
         title: String,
-        prop: KProperty1<AndroidPackage, T>
+        prop: KProperty1<App, T>
     ) {
-        val column = TreeTableColumn<AndroidPackage, T>(title)
+        val column = TreeTableColumn<App, T>(title)
         column.cellValueFactory = Callback { prop.get(it.value.value).observable() }
         columns.add(column)
     }
 
-    private fun TreeItem<AndroidPackage>.addPackages(packages: List<AndroidPackage>) {
-        packages.sortedBy(AndroidPackage::name).forEach { pack ->
+    private fun TreeItem<App>.addPackages(packages: List<App>) {
+        packages.sortedBy(App::name).forEach { pack ->
             children.add(TreeItem(pack))
         }
     }

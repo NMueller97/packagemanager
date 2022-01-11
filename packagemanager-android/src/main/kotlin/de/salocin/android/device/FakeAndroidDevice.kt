@@ -1,16 +1,21 @@
 package de.salocin.android.device
 
-class FakeAndroidDevice(
+import de.salocin.packagemanager.ProgressObserver
+import de.salocin.packagemanager.device.Device
+import java.nio.file.Path
+
+data class FakeAndroidDevice(
     override val serialNumber: String,
     override val model: String
-) : AndroidDevice {
+) : Device {
 
-    override val dataPackages = emptyList<AndroidPackage>()
-    override val systemPackages = emptyList<AndroidPackage>()
-    override val vendorPackages = emptyList<AndroidPackage>()
-    override val unknownPackages = emptyList<AndroidPackage>()
+    override val apps: List<FakeAndroidApp> = emptyList()
 
-    override suspend fun refreshPackages() {
+    override suspend fun refreshApps(observer: ProgressObserver?) {
+        // nothing to do
+    }
+
+    override suspend fun installApp(path: Path, observer: ProgressObserver?) {
         // nothing to do
     }
 

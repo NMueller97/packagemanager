@@ -1,13 +1,14 @@
 package de.salocin.android.device
 
-import de.salocin.android.adb.AdbCommands
+import de.salocin.android.adb.Adb
 
 object AndroidDeviceHolder {
 
     var devices = emptyList<AndroidDevice>()
         private set
 
-    suspend fun refreshDevices() {
-        devices = AdbCommands.devicesCommand.execute()
+    suspend fun refreshDevices(): List<AndroidDevice> {
+        devices = Adb.devices()
+        return devices
     }
 }

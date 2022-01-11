@@ -1,6 +1,6 @@
 package de.salocin.ui.details
 
-import de.salocin.android.device.AndroidPackage
+import de.salocin.packagemanager.device.App
 import de.salocin.ui.ApplicationView
 import de.salocin.ui.PackageManagerApplication
 import de.salocin.ui.dialog.CancelableProgressDialog
@@ -22,7 +22,7 @@ class PackageDetailsButtons(
     app: PackageManagerApplication,
     private val owner: Window,
     private val hostServices: HostServices,
-    private val selectedPackage: ObservableValue<AndroidPackage?>
+    private val selectedPackage: ObservableValue<App?>
 ) : ApplicationView(app) {
 
     private val downloadButton = fontAwesomeButton(title = "Download", icon = FA_DOWNLOAD) {
@@ -38,8 +38,8 @@ class PackageDetailsButtons(
     }
 
     private suspend fun onDownload(dialog: ProgressDialog) {
-        val pack: AndroidPackage = selectedPackage.value ?: return
-        pack.refreshInstallLocation()
+        val pack: App = selectedPackage.value ?: return
+        pack.refreshPaths()
 
         if (pack.paths.isEmpty()) {
             TODO("Show error for user, that there is no file to download")
@@ -61,9 +61,9 @@ class PackageDetailsButtons(
         }
     }
 
-    private suspend fun download(dialog: ProgressDialog, pack: AndroidPackage, target: Path) {
+    private suspend fun download(dialog: ProgressDialog, pack: App, target: Path) {
         pack.download(target, observer = dialog)
-        dialog.notifyFinish()
+//        dialog.notifyFinish()
         hostServices.showDocument(target.parent.toUri().toString())
     }
 }

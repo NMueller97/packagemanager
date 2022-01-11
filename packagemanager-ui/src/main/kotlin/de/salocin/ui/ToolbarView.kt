@@ -1,8 +1,8 @@
 package de.salocin.ui
 
-import de.salocin.android.device.AndroidDevice
 import de.salocin.android.device.AndroidDeviceHolder
 import de.salocin.android.device.FakeAndroidDevice
+import de.salocin.packagemanager.device.Device
 import de.salocin.ui.dialog.CancelableProgressDialog
 import de.salocin.ui.dialog.ProgressDialog
 import de.salocin.ui.fontawesome.FA_SYNC
@@ -22,11 +22,11 @@ import java.nio.file.Path
 
 class ToolbarView(app: PackageManagerApplication, private val owner: Window) : ApplicationView(app) {
 
-    private val devicesComboBox = ComboBox<AndroidDevice>().apply {
-        selectFirstWhenNoSelection()
+    private val devicesComboBox = ComboBox<Device>().apply {
+        selectFirstOnNoSelection()
     }
 
-    val selectedDevice: ObservableValue<AndroidDevice> = devicesComboBox.selectionModel.selectedItemProperty()
+    val selectedDevice: ObservableValue<Device> = devicesComboBox.selectionModel.selectedItemProperty()
 
     private val refreshButton = fontAwesomeButton("Refresh", FA_SYNC) {
         refreshDevicesJob()
@@ -45,13 +45,14 @@ class ToolbarView(app: PackageManagerApplication, private val owner: Window) : A
 
         children.add(devicesComboBox)
         children.add(refreshButton)
+        children.add(installButton)
     }
 
     init {
         refreshDevicesJob()
     }
 
-    private fun ComboBox<*>.selectFirstWhenNoSelection() {
+    private fun ComboBox<*>.selectFirstOnNoSelection() {
         if (selectionModel.selectedItem == null) {
             selectionModel.selectFirst()
         }
@@ -67,7 +68,7 @@ class ToolbarView(app: PackageManagerApplication, private val owner: Window) : A
             } else {
                 AndroidDeviceHolder.devices.observableList()
             }
-            devicesComboBox.selectFirstWhenNoSelection()
+            devicesComboBox.selectFirstOnNoSelection()
         }
     }
 
@@ -79,11 +80,22 @@ class ToolbarView(app: PackageManagerApplication, private val owner: Window) : A
 
         if (file != null) {
             dialog.show()
-            install(dialog, file.toPath())
+            installFrom(dialog, file.toPath())
         }
     }
 
-    private suspend fun install(dialog: ProgressDialog, target: Path) {
-        TODO("Install")
+    private suspend fun installFrom(dialog: ProgressDialog, target: Path) {
+        dialog.notifyProgressChange(0)
+        dialog.notifyMaxProgressChange(1)
+
+        TODO()
+        /*
+        for (source in paths) {
+            observer?.notifyMessageChange("Downloading ${source.name}")
+            val tempTarget = target.path.resolve(source.name)
+            Adb.pull(source, tempTarget).execute()
+            observer?.notifyProgressChange(++progress)
+        }
+         */
     }
 }

@@ -1,18 +1,20 @@
 package de.salocin.android.device
 
-interface AndroidDevice {
+import de.salocin.android.adb.Adb
+import de.salocin.packagemanager.ProgressObserver
+import de.salocin.packagemanager.device.Device
+import java.nio.file.Path
 
-    val model: String
+data class AndroidDevice(override val model: String, override val serialNumber: String) : Device {
 
-    val serialNumber: String
+    override var apps: List<AndroidApp> = emptyList()
+        private set
 
-    val dataPackages: List<AndroidPackage>
+    override suspend fun refreshApps(observer: ProgressObserver?) {
+        apps = Adb.packages(this)
+    }
 
-    val systemPackages: List<AndroidPackage>
-
-    val vendorPackages: List<AndroidPackage>
-
-    val unknownPackages: List<AndroidPackage>
-
-    suspend fun refreshPackages()
+    override suspend fun installApp(path: Path, observer: ProgressObserver?) {
+        TODO("Not yet implemented")
+    }
 }

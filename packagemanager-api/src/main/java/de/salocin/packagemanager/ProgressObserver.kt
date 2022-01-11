@@ -1,4 +1,4 @@
-package de.salocin.android.progress
+package de.salocin.packagemanager
 
 interface ProgressObserver {
 
@@ -7,6 +7,4 @@ interface ProgressObserver {
     suspend fun notifyMaxProgressChange(maxProgress: Int)
 
     suspend fun notifyMessageChange(message: String)
-
-    suspend fun notifyFinish()
 }

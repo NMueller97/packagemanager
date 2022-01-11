@@ -1,6 +1,6 @@
 package de.salocin.ui.dialog
 
-import de.salocin.android.progress.ProgressObserver
+import de.salocin.packagemanager.ProgressObserver
 import de.salocin.ui.getValue
 import de.salocin.ui.setValue
 import javafx.beans.property.SimpleDoubleProperty
@@ -57,7 +57,7 @@ open class ProgressDialog(owner: Window) : ProgressObserver {
         this.message = message
     }
 
-    override suspend fun notifyFinish() {
-        stage.close()
-    }
+//    override suspend fun notifyFinish() {
+//        stage.close()
+//    }
 }

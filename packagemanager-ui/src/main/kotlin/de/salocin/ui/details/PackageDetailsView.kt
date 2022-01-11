@@ -1,6 +1,7 @@
 package de.salocin.ui.details
 
-import de.salocin.android.device.AndroidPackage
+import de.salocin.android.device.AndroidAppType
+import de.salocin.packagemanager.device.App
 import de.salocin.ui.ApplicationView
 import de.salocin.ui.PackageManagerApplication
 import de.salocin.ui.observableList
@@ -18,7 +19,7 @@ class PackageDetailsView(
     app: PackageManagerApplication,
     owner: Window,
     hostServices: HostServices,
-    selectedPackage: ObservableValue<AndroidPackage?>
+    selectedPackage: ObservableValue<App?>
 ) : ApplicationView(app) {
 
     private val buttons = PackageDetailsButtons(app, owner, hostServices, selectedPackage)
@@ -39,7 +40,7 @@ class PackageDetailsView(
             content.isVisible = false
             contentLoader.isVisible = false
 
-            if (newValue == null || !newValue.detailsAvailable) {
+            if (newValue == null || newValue.type == AndroidAppType.FAKE) {
                 contentNoDetails.isVisible = true
             } else {
                 contentNoDetails.isVisible = false
@@ -48,11 +49,11 @@ class PackageDetailsView(
         }
     }
 
-    private fun refreshDetailsJob(pack: AndroidPackage) {
+    private fun refreshDetailsJob(pack: App) {
         app.launch {
             contentLoader.isVisible = true
 
-            pack.refreshInstallLocation()
+            pack.refreshPaths()
 
             nameTextField.text = pack.name
             pathsList.items = pack.paths.observableList()

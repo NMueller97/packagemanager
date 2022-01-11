@@ -34,29 +34,6 @@ fun Path.deleteRecursive() {
     deleteExisting()
 }
 
-@Throws(IOException::class)
-fun List<Path>.zipTo(target: Path) {
-    target.deleteIfExists()
-    target.createFile()
-
-    target.zipOutputStream().use { out ->
-        forEach { file ->
-            out.putNextEntry(file.asZipEntry())
-            file.inputStream().copyTo(out)
-        }
-    }
-}
-
-@Throws(IOException::class)
-fun Path.zipOutputStream(): ZipOutputStream {
-    return ZipOutputStream(outputStream())
-}
-
-@Throws(IOException::class)
-fun Path.asZipEntry(): ZipEntry {
-    return ZipEntry(name)
-}
-
 suspend inline fun createTemporaryDirectory(crossinline block: suspend (TemporaryDirectory) -> Unit) {
     coroutineScope {
         val createDirectoryJob: Deferred<Path> = async(Dispatchers.IO) {
@@ -78,6 +55,12 @@ suspend inline fun createTemporaryDirectory(crossinline block: suspend (Temporar
         }
     }
 }
+
+@JvmInline
+value class PlatformPath(val path: Path)
+
+@JvmInline
+value class RemotePath(val path: Path)
 
 @JvmInline
 value class TemporaryDirectory(val path: Path)

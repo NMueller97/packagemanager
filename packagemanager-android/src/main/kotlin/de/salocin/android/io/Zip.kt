@@ -35,10 +35,10 @@ fun List<Path>.zip(target: ZipFile) {
 }
 
 @Throws(IOException::class)
-fun ZipFile.unzip(target: TemporaryDirectory) {
+fun ZipFile.unzip(target: Path) {
     inputStream().use { input ->
         input::getNextEntry.whileNotNull { entry ->
-            val file = target.path.resolve(entry.name)
+            val file = target.resolve(entry.name)
             file.deleteIfExists()
             file.createFile()
             input.copyTo(file.outputStream())

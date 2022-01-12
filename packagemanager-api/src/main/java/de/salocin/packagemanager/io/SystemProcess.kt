@@ -8,6 +8,7 @@ open class SystemProcess<T>(
     private val arguments: List<String>,
     private val stdoutParser: OutputParser<T>? = null,
     private val stderrParser: OutputParser<T>? = null,
+    private val commandPipe: PrintStream? = null,
     private val stdoutPipe: PrintStream? = null,
     private val stderrPipe: PrintStream? = null
 ) : Process<T> {
@@ -15,6 +16,7 @@ open class SystemProcess<T>(
     override suspend fun execute(): List<T> {
         return runInterruptible(Dispatchers.IO) {
             val parsedLines = mutableListOf<T>()
+            commandPipe?.println(arguments.joinToString(" "))
 
             val process = ProcessBuilder(arguments).start()!!
             val stdout = SystemProcessOutput(process.inputStream, stdoutParser, stdoutPipe)

@@ -17,4 +17,8 @@ data class AndroidDevice(override val model: String, override val serialNumber: 
     override suspend fun installApp(path: Path, observer: ProgressObserver?) {
         TODO("Not yet implemented")
     }
+
+    override fun toString(): String {
+        return model
+    }
 }

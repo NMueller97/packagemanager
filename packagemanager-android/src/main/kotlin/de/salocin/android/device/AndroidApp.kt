@@ -65,4 +65,8 @@ data class AndroidApp(
         observer?.notifyProgressChange(index + 1)
         return path
     }
+
+    override fun toString(): String {
+        return name
+    }
 }

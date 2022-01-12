@@ -2,6 +2,7 @@ package de.salocin.ui.fontawesome
 
 import javafx.scene.Node
 import javafx.scene.control.Button
+import javafx.scene.control.MenuItem
 import javafx.scene.text.Text
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -12,6 +13,18 @@ fun fontAwesomeButton(
     onAction: Button.() -> Unit
 ): Button {
     return Button(title, icon?.let { fontAwesomeIcon(it) }).apply {
+        setOnAction {
+            onAction()
+        }
+    }
+}
+
+fun fontAwesomeMenuItem(
+    title: String = "",
+    icon: FontAwesomeIcon? = null,
+    onAction: MenuItem.() -> Unit
+): MenuItem {
+    return MenuItem(title, icon?.let { fontAwesomeIcon(it) }).apply {
         setOnAction {
             onAction()
         }

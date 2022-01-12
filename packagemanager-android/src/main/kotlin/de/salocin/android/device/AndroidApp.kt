@@ -46,6 +46,8 @@ data class AndroidApp(
                     downloadSingleApk(observer, devicePath, temporaryDirectory, index)
                 }
 
+                observer?.notifyMessageChange("Packing ZIP file")
+
                 withContext(Dispatchers.IO) {
                     temporaryDirectory.listDirectoryEntries().zip(ZipFile(destination))
                 }

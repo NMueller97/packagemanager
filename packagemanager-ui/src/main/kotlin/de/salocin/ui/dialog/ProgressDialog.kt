@@ -45,6 +45,10 @@ open class ProgressDialog(owner: Window) : ProgressObserver {
         stage.show()
     }
 
+    fun close() {
+        stage.close()
+    }
+
     override suspend fun notifyProgressChange(progress: Int) {
         this.progress = progress.toDouble()
     }
@@ -56,8 +60,4 @@ open class ProgressDialog(owner: Window) : ProgressObserver {
     override suspend fun notifyMessageChange(message: String) {
         this.message = message
     }
-
-//    override suspend fun notifyFinish() {
-//        stage.close()
-//    }
 }

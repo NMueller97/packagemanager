@@ -8,6 +8,7 @@ class AdbProcess<T>(device: String?, arguments: List<String>, parser: OutputPars
     SystemProcess<T>(
         arguments.concatBaseCommand(device),
         stdoutParser = parser,
+        commandPipe = System.out,
         stdoutPipe = System.out,
         stderrPipe = System.err
     ) {

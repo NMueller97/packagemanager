@@ -1,4 +1,4 @@
 rootProject.name = "packagemanager"
+include("packagemanager-api")
 include("packagemanager-android")
 include("packagemanager-ui")
-include("packagemanager-api")

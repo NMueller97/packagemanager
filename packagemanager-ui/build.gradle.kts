@@ -19,7 +19,7 @@ javafx {
 }
 
 application {
-    mainClass.set("de.salocin.ui.Main")
+    mainClass.set("de.salocin.ui.PackageManagerApplicationKt")
 }
 
 dependencies {

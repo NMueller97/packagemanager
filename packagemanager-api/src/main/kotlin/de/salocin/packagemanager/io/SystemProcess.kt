@@ -10,9 +10,8 @@ open class SystemProcess<T>(
     private val stderrParser: OutputParser<T>? = null,
     private val commandPipe: PrintStream? = null,
     private val stdoutPipe: PrintStream? = null,
-    private val stderrPipe: PrintStream? = null
+    private val stderrPipe: PrintStream? = null,
 ) : Process<T> {
-
     override suspend fun execute(): List<T> {
         return runInterruptible(Dispatchers.IO) {
             val parsedLines = mutableListOf<T>()
@@ -35,12 +34,14 @@ open class SystemProcess<T>(
     }
 
     companion object {
-
         fun build(arguments: List<String>): SystemProcess<String> {
             return SystemProcess(arguments)
         }
 
-        fun <T> build(arguments: List<String>, stdoutParser: OutputParser<T>): SystemProcess<T> {
+        fun <T> build(
+            arguments: List<String>,
+            stdoutParser: OutputParser<T>,
+        ): SystemProcess<T> {
             return SystemProcess(arguments, stdoutParser)
         }
     }

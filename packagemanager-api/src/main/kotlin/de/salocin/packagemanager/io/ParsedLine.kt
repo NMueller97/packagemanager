@@ -5,7 +5,6 @@ import kotlin.reflect.typeOf
 
 @JvmInline
 value class ParsedLine(val value: List<String>) {
-
     fun <T : Any> buildValueClassInstance(targetClass: KClass<T>): T {
         for (constructor in targetClass.constructors) {
             if (constructor.parameters.count() == value.size &&

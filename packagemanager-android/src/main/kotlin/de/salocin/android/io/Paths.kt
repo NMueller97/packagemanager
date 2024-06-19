@@ -4,7 +4,14 @@ import de.salocin.packagemanager.device.FileType
 import de.salocin.packagemanager.fake.mapEachMatch
 import de.salocin.packagemanager.io.RegexOutputParser
 import de.salocin.packagemanager.io.TemporaryDirectory
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.Path
@@ -22,7 +29,7 @@ data class LsRegexResult(
     val group: String,
     val size: String,
     val timestamp: String,
-    val name: String
+    val name: String,
 )
 
 val LS_OUTPUT_PARSER = RegexOutputParser(lsRegex).takeAllGroups().mapEachMatch<LsRegexResult>()
@@ -56,9 +63,10 @@ fun String.parseAsFileType(): FileType? {
 
 suspend inline fun createTemporaryDirectory(crossinline block: suspend (TemporaryDirectory) -> Unit) {
     coroutineScope {
-        val createDirectoryJob: Deferred<Path> = async(Dispatchers.IO) {
-            Files.createTempDirectory(null)
-        }
+        val createDirectoryJob: Deferred<Path> =
+            async(Dispatchers.IO) {
+                Files.createTempDirectory(null)
+            }
 
         val directory = TemporaryDirectory(createDirectoryJob.await())
 

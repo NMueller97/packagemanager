@@ -10,19 +10,20 @@ class AdbProcess<T>(device: String?, arguments: List<String>, parser: OutputPars
         stdoutParser = parser,
         commandPipe = System.out,
         stdoutPipe = System.out,
-        stderrPipe = System.err
+        stderrPipe = System.err,
     ) {
-
     companion object {
-
-        fun build(device: AndroidDevice?, arguments: List<String>): SystemProcess<String> {
+        fun build(
+            device: AndroidDevice?,
+            arguments: List<String>,
+        ): SystemProcess<String> {
             return AdbProcess(device?.serialNumber, arguments, null)
         }
 
         fun <T> build(
             device: AndroidDevice?,
             arguments: List<String>,
-            stdoutParser: OutputParser<T>
+            stdoutParser: OutputParser<T>,
         ): SystemProcess<T> {
             return AdbProcess(device?.serialNumber, arguments, stdoutParser)
         }

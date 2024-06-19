@@ -6,7 +6,6 @@ import de.salocin.packagemanager.device.AppFile
 import java.nio.file.Path
 
 object FakeAppBundle : AppBundle {
-
     override val path: Path
         get() = Configuration.workingDirectory
 

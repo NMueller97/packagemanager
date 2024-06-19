@@ -12,9 +12,8 @@ import java.nio.charset.StandardCharsets
 class SystemProcessOutput<T>(
     private val inputStream: InputStream,
     private val outputParser: OutputParser<T>?,
-    private val outputPipe: PrintStream?
+    private val outputPipe: PrintStream?,
 ) {
-
     private val buffer = ByteBuffer.allocate(BUFFER_SIZE)
 
     /**
@@ -41,7 +40,10 @@ class SystemProcessOutput<T>(
         return list
     }
 
-    private fun read(bytes: ByteArray, parsedLines: MutableList<T>) {
+    private fun read(
+        bytes: ByteArray,
+        parsedLines: MutableList<T>,
+    ) {
         for (byte in bytes) {
             outputPipe?.print(byte.toInt().toChar())
 
@@ -55,7 +57,10 @@ class SystemProcessOutput<T>(
         }
     }
 
-    private fun finishLine(list: MutableList<T>, parser: OutputParser<T>) {
+    private fun finishLine(
+        list: MutableList<T>,
+        parser: OutputParser<T>,
+    ) {
         val bytes = ByteArray(buffer.position())
         val endIndex = if (isWindowsLineFeed) buffer.position() - 1 else buffer.position()
 
@@ -69,7 +74,6 @@ class SystemProcessOutput<T>(
     }
 
     companion object {
-
         private const val BUFFER_SIZE = 8 * 1024
 
         private val isWindowsLineFeed = System.lineSeparator() == "\r\n"

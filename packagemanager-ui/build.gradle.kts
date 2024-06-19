@@ -1,4 +1,5 @@
 val kotlinCoroutinesVersion: String by extra
+val javafxVersion: String by extra
 
 plugins {
     kotlin("jvm")
@@ -13,7 +14,6 @@ kotlin {
 }
 
 javafx {
-    val javafxVersion: String by extra
     version = javafxVersion
     modules = listOf("javafx.controls")
 }

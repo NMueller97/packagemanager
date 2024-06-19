@@ -11,7 +11,6 @@ import de.salocin.packagemanager.io.RegexOutputParser
 import java.nio.file.Path
 
 object Adb {
-
     private val devicesRegex = Regex("^([A-Z0-9]+).+model:([^\\s]*).*\$")
     private val packagesRegex = Regex("^package:(.+)=(.+)$")
     private val stripPackagePrefixRegex = Regex("^package:(.+)$")
@@ -22,12 +21,19 @@ object Adb {
         return process.execute()
     }
 
-    suspend fun pull(device: AndroidDevice, devicePath: DevicePath<AndroidDevice>, target: Path) {
+    suspend fun pull(
+        device: AndroidDevice,
+        devicePath: DevicePath<AndroidDevice>,
+        target: Path,
+    ) {
         val process = AdbProcess.build(device, listOf("pull", "-a", devicePath.path, target.toString()))
         process.execute()
     }
 
-    suspend fun install(device: AndroidDevice, files: Array<Path>) {
+    suspend fun install(
+        device: AndroidDevice,
+        files: Array<Path>,
+    ) {
         val paths = files.map { it.toString() }.toTypedArray()
         val process = AdbProcess.build(device, listOf("install-multiple", *paths))
         process.execute()
@@ -42,8 +48,9 @@ object Adb {
     private fun retrieveAppType(basePath: String): AndroidAppType {
         val isData = basePath.startsWith("/data")
         val isSystem = basePath.startsWith("/system")
-        val isVendor = basePath.startsWith("/system_ext") || basePath.startsWith("/vendor")
-                || basePath.startsWith("/product")
+        val isVendor =
+            basePath.startsWith("/system_ext") || basePath.startsWith("/vendor") ||
+                basePath.startsWith("/product")
 
         return when {
             isData -> AndroidAppType.DATA
@@ -53,15 +60,23 @@ object Adb {
         }
     }
 
-    suspend fun packagePaths(device: AndroidDevice, name: String): List<AndroidDevicePath> {
-        val parser = RegexOutputParser(stripPackagePrefixRegex).takeGroup(1).mapEachMatchTo {
-            AndroidDevicePath(device, it, FileType.Regular)
-        }
+    suspend fun packagePaths(
+        device: AndroidDevice,
+        name: String,
+    ): List<AndroidDevicePath> {
+        val parser =
+            RegexOutputParser(stripPackagePrefixRegex).takeGroup(1).mapEachMatchTo {
+                AndroidDevicePath(device, it, FileType.Regular)
+            }
         val process = AdbProcess.build(device, listOf("shell", "pm", "path", name), parser)
         return process.execute()
     }
 
-    suspend fun <T> shell(device: AndroidDevice, parser: OutputParser<T>, vararg command: String): List<T> {
+    suspend fun <T> shell(
+        device: AndroidDevice,
+        parser: OutputParser<T>,
+        vararg command: String,
+    ): List<T> {
         val process = AdbProcess.build(device, listOf("shell", *command), parser)
         return process.execute()
     }

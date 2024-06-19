@@ -9,9 +9,8 @@ import de.salocin.packagemanager.device.FileType
 data class AndroidDevicePath(
     override val device: AndroidDevice,
     override val path: String,
-    override val type: FileType
+    override val type: FileType,
 ) : DevicePath<AndroidDevice> {
-
     override suspend fun list(): List<AndroidDevicePath> {
         return Adb.shell(device, LS_OUTPUT_PARSER, "ls", "-lA", path).mapNotNull { result ->
             val fileType = result.type.parseAsFileType()

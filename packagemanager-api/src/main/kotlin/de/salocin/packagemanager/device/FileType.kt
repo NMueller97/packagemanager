@@ -1,7 +1,6 @@
 package de.salocin.packagemanager.device
 
 interface FileType {
-
     val isDirectory: Boolean
 
     val isRegular: Boolean
@@ -9,7 +8,6 @@ interface FileType {
     val isLink: Boolean
 
     object Directory : FileType {
-
         override val isDirectory: Boolean = true
 
         override val isRegular: Boolean = false
@@ -18,7 +16,6 @@ interface FileType {
     }
 
     object Regular : FileType {
-
         override val isDirectory: Boolean = false
 
         override val isRegular: Boolean = true
@@ -27,7 +24,6 @@ interface FileType {
     }
 
     object Link : FileType {
-
         override val isDirectory: Boolean = false
 
         override val isRegular: Boolean = false

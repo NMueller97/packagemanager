@@ -20,9 +20,8 @@ import kotlin.io.path.name
 data class AndroidApp(
     val device: AndroidDevice,
     override val name: String,
-    override val type: AndroidAppType
+    override val type: AndroidAppType,
 ) : App {
-
     override var paths: List<AndroidDevicePath> = emptyList()
         private set
 
@@ -51,7 +50,10 @@ data class AndroidApp(
         return AndroidAppBundle(directory, appFiles)
     }
 
-    override suspend fun downloadAsSingleFile(path: Path, observer: ProgressObserver?) {
+    override suspend fun downloadAsSingleFile(
+        path: Path,
+        observer: ProgressObserver?,
+    ) {
         val bundle = download()
         bundle.path.listDirectoryEntries().zip(ZipFile(path))
     }
@@ -60,7 +62,7 @@ data class AndroidApp(
         observer: ProgressObserver?,
         devicePath: AndroidDevicePath,
         temporaryDirectory: TemporaryDirectory,
-        index: Int
+        index: Int,
     ): Path {
         observer?.notifyMessageChange("Downloading ${devicePath.path.filename}")
         val path = temporaryDirectory.path.resolve(devicePath.path.filename)
@@ -73,7 +75,7 @@ data class AndroidApp(
         observer: ProgressObserver?,
         temporaryDirectory: TemporaryDirectory,
         destinationDirectory: Path,
-        appFiles: MutableList<AndroidAppFile>
+        appFiles: MutableList<AndroidAppFile>,
     ) {
         observer?.notifyMessageChange("Moving downloaded files")
         observer?.notifyProgressChange(0)
@@ -94,7 +96,6 @@ data class AndroidApp(
     }
 
     companion object {
-
         const val APPS_DIRECTORY = "apps"
     }
 }

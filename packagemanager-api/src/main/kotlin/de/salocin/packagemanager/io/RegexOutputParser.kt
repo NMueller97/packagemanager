@@ -1,12 +1,13 @@
 package de.salocin.packagemanager.io
 
 class RegexOutputParser(private val regex: Regex) : OutputParser<ParsedLine> {
-
     override fun parseLine(line: String): ParsedLine? {
         return regex.matchEntire(line)?.let { result ->
-            ParsedLine(result.groups.mapNotNull { group ->
-                group?.value
-            })
+            ParsedLine(
+                result.groups.mapNotNull { group ->
+                    group?.value
+                },
+            )
         }
     }
 

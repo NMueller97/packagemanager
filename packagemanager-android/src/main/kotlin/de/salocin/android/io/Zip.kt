@@ -5,11 +5,14 @@ import java.nio.file.Path
 import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 import java.util.zip.ZipOutputStream
-import kotlin.io.path.*
+import kotlin.io.path.createFile
+import kotlin.io.path.deleteIfExists
+import kotlin.io.path.inputStream
+import kotlin.io.path.name
+import kotlin.io.path.outputStream
 
 @JvmInline
 value class ZipFile(val path: Path) {
-
     @Throws(IOException::class)
     fun outputStream(): ZipOutputStream {
         return ZipOutputStream(path.outputStream())

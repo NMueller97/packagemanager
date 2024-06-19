@@ -4,7 +4,6 @@ import de.salocin.packagemanager.ProgressObserver
 import java.nio.file.Path
 
 interface App {
-
     val name: String
 
     val type: AppType
@@ -15,5 +14,8 @@ interface App {
 
     suspend fun download(observer: ProgressObserver? = null): AppBundle
 
-    suspend fun downloadAsSingleFile(path: Path, observer: ProgressObserver? = null)
+    suspend fun downloadAsSingleFile(
+        path: Path,
+        observer: ProgressObserver? = null,
+    )
 }

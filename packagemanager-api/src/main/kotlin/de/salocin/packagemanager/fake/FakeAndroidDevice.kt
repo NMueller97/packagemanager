@@ -7,9 +7,8 @@ import java.nio.file.Path
 
 data class FakeAndroidDevice(
     override val serialNumber: String,
-    override val model: String
+    override val model: String,
 ) : Device {
-
     override val apps: List<FakeAndroidApp> = emptyList()
 
     private val rootPaths: List<DevicePath<Device>> = emptyList()
@@ -22,7 +21,10 @@ data class FakeAndroidDevice(
         // nothing to do
     }
 
-    override suspend fun installApp(path: Path, observer: ProgressObserver?) {
+    override suspend fun installApp(
+        path: Path,
+        observer: ProgressObserver?,
+    ) {
         // nothing to do
     }
 
@@ -37,7 +39,6 @@ data class FakeAndroidDevice(
     override fun hashCode() = model.hashCode()
 
     companion object {
-
         private const val SERIAL_NUMBER = "null"
 
         val noDevicesConnected = FakeAndroidDevice(SERIAL_NUMBER, "No devices connected")

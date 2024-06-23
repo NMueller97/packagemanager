@@ -2,8 +2,8 @@ val kotlinCoroutinesVersion: String by extra
 val javafxVersion: String by extra
 
 plugins {
-    kotlin("jvm")
-    id("org.openjfx.javafxplugin")
+    id("packagemanager.shared")
+    id("org.openjfx.javafxplugin") version "0.1.0"
     application
 }
 
@@ -24,9 +24,5 @@ application {
 
 dependencies {
     api(project(":packagemanager-android"))
-    implementation(kotlin("stdlib"))
-    implementation(kotlin("reflect"))
-    implementation("org.slf4j:slf4j-simple:1.7.32")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinCoroutinesVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-javafx:$kotlinCoroutinesVersion")
 }

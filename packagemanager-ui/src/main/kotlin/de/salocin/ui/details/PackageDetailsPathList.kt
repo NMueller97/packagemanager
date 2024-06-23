@@ -20,27 +20,31 @@ import javafx.scene.text.Text
 import javafx.util.Callback
 
 class PackageDetailsPathList(label: String) : View {
-
     private val listLabel = Text(label)
-    private val listView = ListView<DevicePath<Device>>().apply {
-        cellFactory = Callback {
-            val cell = ListCell<DevicePath<Device>>()
-            val contextMenu = ContextMenu()
-            contextMenu.items.add(fontAwesomeMenuItem("Copy Path", FA_COPY) {
-                onAction = EventHandler {
-                    val clipboard = Clipboard.getSystemClipboard()
-                    val content = ClipboardContent()
-                    content.putString(cell.item.path)
-                    clipboard.setContent(content)
+    private val listView =
+        ListView<DevicePath<Device>>().apply {
+            cellFactory =
+                Callback {
+                    val cell = ListCell<DevicePath<Device>>()
+                    val contextMenu = ContextMenu()
+                    contextMenu.items.add(
+                        fontAwesomeMenuItem("Copy Path", FA_COPY) {
+                            onAction =
+                                EventHandler {
+                                    val clipboard = Clipboard.getSystemClipboard()
+                                    val content = ClipboardContent()
+                                    content.putString(cell.item.path)
+                                    clipboard.setContent(content)
+                                }
+                        },
+                    )
+
+                    cell.textProperty().bind(cell.itemProperty().mapTo { it?.path })
+                    cell.contextMenuProperty().bind(cell.emptyProperty().mapTo { if (it) null else contextMenu })
+
+                    cell
                 }
-            })
-
-            cell.textProperty().bind(cell.itemProperty().mapTo { it?.path })
-            cell.contextMenuProperty().bind(cell.emptyProperty().mapTo { if (it) null else contextMenu })
-
-            cell
         }
-    }
 
     var items: ObservableList<DevicePath<Device>> by listView.itemsProperty()
 

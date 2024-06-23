@@ -8,7 +8,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlin.coroutines.CoroutineContext
 
 class PackageManagerApplication : Application(), CoroutineScope {
-
     override val coroutineContext: CoroutineContext = Dispatchers.Main
 
     override fun start(primaryStage: Stage?) {

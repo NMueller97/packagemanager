@@ -9,23 +9,26 @@ import de.salocin.ui.PackageManagerApplication
 import de.salocin.ui.mapTo
 import de.salocin.ui.util.column
 import javafx.beans.value.ObservableValue
-import javafx.scene.control.*
+import javafx.scene.control.ProgressIndicator
+import javafx.scene.control.TreeItem
+import javafx.scene.control.TreeTableView
 import kotlinx.coroutines.launch
 
 class DeviceFileSystemTree(
     app: PackageManagerApplication,
-    selectedDevice: ObservableValue<Device>
+    selectedDevice: ObservableValue<Device>,
 ) : ApplicationView(app) {
+    private val placeholderItem =
+        TreeItem<DevicePath<Device>>().apply {
+            value = FakeDevicePath(FakeAndroidDevice("", ""), "")
+        }
 
-    private val placeholderItem = TreeItem<DevicePath<Device>>().apply {
-        value = FakeDevicePath(FakeAndroidDevice("", ""), "")
-    }
-
-    override val root = TreeTableView<DevicePath<Device>>().apply {
-        column("Name", DevicePath<Device>::path, ::DeviceFileSystemTreeTableCell)
-        columnResizePolicy = TreeTableView.CONSTRAINED_RESIZE_POLICY
-        placeholder = ProgressIndicator()
-    }
+    override val root =
+        TreeTableView<DevicePath<Device>>().apply {
+            column("Name", DevicePath<Device>::path, ::DeviceFileSystemTreeTableCell)
+            columnResizePolicy = TreeTableView.CONSTRAINED_RESIZE_POLICY
+            placeholder = ProgressIndicator()
+        }
 
     val selectedPath = root.selectionModel.selectedItemProperty().mapTo { it?.value }
 

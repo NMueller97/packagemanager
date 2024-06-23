@@ -21,32 +21,36 @@ import java.io.File
 import java.nio.file.Path
 
 class ToolbarView(app: PackageManagerApplication, private val owner: Window) : ApplicationView(app) {
-
-    private val devicesComboBox = ComboBox<Device>().apply {
-        selectFirstOnNoSelection()
-    }
+    private val devicesComboBox =
+        ComboBox<Device>().apply {
+            selectFirstOnNoSelection()
+        }
 
     val selectedDevice: ObservableValue<Device> = devicesComboBox.selectionModel.selectedItemProperty()
 
-    private val refreshButton = fontAwesomeButton("Refresh", FA_SYNC) {
-        refreshDevicesJob()
-    }
-
-    private val installButton = fontAwesomeButton("Install", FA_UPLOAD) {
-        val dialog = CancelableProgressDialog(owner)
-        dialog.cancelableJob = app.launch {
-            onInstall(dialog)
+    private val refreshButton =
+        fontAwesomeButton("Refresh", FA_SYNC) {
+            refreshDevicesJob()
         }
-    }
 
-    override val root = HBox().apply {
-        spacing = 5.0
-        padding = Insets(10.0)
+    private val installButton =
+        fontAwesomeButton("Install", FA_UPLOAD) {
+            val dialog = CancelableProgressDialog(owner)
+            dialog.cancelableJob =
+                app.launch {
+                    onInstall(dialog)
+                }
+        }
 
-        children.add(devicesComboBox)
-        children.add(refreshButton)
-        children.add(installButton)
-    }
+    override val root =
+        HBox().apply {
+            spacing = 5.0
+            padding = Insets(10.0)
+
+            children.add(devicesComboBox)
+            children.add(refreshButton)
+            children.add(installButton)
+        }
 
     init {
         refreshDevicesJob()
@@ -63,20 +67,23 @@ class ToolbarView(app: PackageManagerApplication, private val owner: Window) : A
             devicesComboBox.items = null
             devicesComboBox.placeholder = ProgressIndicator()
             AndroidDeviceHolder.refreshDevices()
-            devicesComboBox.items = if (AndroidDeviceHolder.devices.isEmpty()) {
-                FXCollections.singletonObservableList(FakeAndroidDevice.noDevicesConnected)
-            } else {
-                AndroidDeviceHolder.devices.observableList()
-            }
+            devicesComboBox.items =
+                if (AndroidDeviceHolder.devices.isEmpty()) {
+                    FXCollections.singletonObservableList(FakeAndroidDevice.noDevicesConnected)
+                } else {
+                    AndroidDeviceHolder.devices.observableList()
+                }
             devicesComboBox.selectFirstOnNoSelection()
         }
     }
 
     private suspend fun onInstall(dialog: ProgressDialog) {
-        val file: File? = FileChooser().apply {
-            extensionFilters.add(FileChooser.ExtensionFilter("Android Package", ".apk"))
-            extensionFilters.add(FileChooser.ExtensionFilter("Split Android Packages", ".zip"))
-        }.showOpenDialog(owner)
+        val file: File? =
+            FileChooser()
+                .apply {
+                    extensionFilters.add(FileChooser.ExtensionFilter("Android Package", ".apk"))
+                    extensionFilters.add(FileChooser.ExtensionFilter("Split Android Packages", ".zip"))
+                }.showOpenDialog(owner)
 
         if (file != null) {
             dialog.show()
@@ -84,7 +91,10 @@ class ToolbarView(app: PackageManagerApplication, private val owner: Window) : A
         }
     }
 
-    private suspend fun installFrom(dialog: ProgressDialog, target: Path) {
+    private suspend fun installFrom(
+        dialog: ProgressDialog,
+        target: Path,
+    ) {
         dialog.notifyProgressChange(0)
         dialog.notifyMaxProgressChange(1)
 

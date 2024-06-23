@@ -14,32 +14,34 @@ import javafx.stage.Stage
 import javafx.stage.Window
 
 open class ProgressDialog(owner: Window) : ProgressObserver {
-
     private val progressProperty = SimpleDoubleProperty(0.0)
     var progress: Double by progressProperty
 
     private val maxProgressProperty = SimpleDoubleProperty(1.0)
     var maxProgress: Double by maxProgressProperty
 
-    private val progressBar = ProgressBar().apply {
-        progressProperty().bind(progressProperty.divide(maxProgressProperty))
-        prefWidth = 500.0
-    }
+    private val progressBar =
+        ProgressBar().apply {
+            progressProperty().bind(progressProperty.divide(maxProgressProperty))
+            prefWidth = 500.0
+        }
 
     private val messageText = Text()
     var message: String by messageText.textProperty()
 
-    protected val contentLayout = VBox(10.0, messageText, progressBar).apply {
-        padding = Insets(10.0)
-    }
+    protected val contentLayout =
+        VBox(10.0, messageText, progressBar).apply {
+            padding = Insets(10.0)
+        }
 
-    protected val stage = Stage().apply {
-        initOwner(owner)
-        initModality(Modality.WINDOW_MODAL)
-        scene = Scene(contentLayout)
-        contentLayout.autosize()
-        sizeToScene()
-    }
+    protected val stage =
+        Stage().apply {
+            initOwner(owner)
+            initModality(Modality.WINDOW_MODAL)
+            scene = Scene(contentLayout)
+            contentLayout.autosize()
+            sizeToScene()
+        }
 
     fun show() {
         stage.show()

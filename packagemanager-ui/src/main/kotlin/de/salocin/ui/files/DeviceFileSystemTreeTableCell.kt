@@ -10,11 +10,13 @@ import de.salocin.ui.fontawesome.fontAwesomeIcon
 import javafx.scene.control.TreeTableCell
 
 class DeviceFileSystemTreeTableCell : TreeTableCell<DevicePath<Device>, String?>() {
-
     private val regularIcon = fontAwesomeIcon(FA_FILE_ALT)
     private val folderIcon = fontAwesomeIcon(FA_FOLDER)
 
-    override fun updateItem(item: String?, empty: Boolean) {
+    override fun updateItem(
+        item: String?,
+        empty: Boolean,
+    ) {
         super.updateItem(item, empty)
 
         val value = treeTableRow?.treeItem?.value
@@ -24,11 +26,12 @@ class DeviceFileSystemTreeTableCell : TreeTableCell<DevicePath<Device>, String?>
             graphic = null
         } else {
             text = item.filename
-            graphic = when (value.type) {
-                FileType.Regular -> regularIcon
-                FileType.Directory -> folderIcon
-                else -> null
-            }
+            graphic =
+                when (value.type) {
+                    FileType.Regular -> regularIcon
+                    FileType.Directory -> folderIcon
+                    else -> null
+                }
         }
     }
 }

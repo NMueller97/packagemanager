@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 fun fontAwesomeButton(
     title: String = "",
     icon: FontAwesomeIcon? = null,
-    onAction: Button.() -> Unit
+    onAction: Button.() -> Unit,
 ): Button {
     return Button(title, icon?.let { fontAwesomeIcon(it) }).apply {
         setOnAction {
@@ -22,7 +22,7 @@ fun fontAwesomeButton(
 fun fontAwesomeMenuItem(
     title: String = "",
     icon: FontAwesomeIcon? = null,
-    onAction: MenuItem.() -> Unit
+    onAction: MenuItem.() -> Unit,
 ): MenuItem {
     return MenuItem(title, icon?.let { fontAwesomeIcon(it) }).apply {
         setOnAction {
@@ -35,7 +35,7 @@ fun fontAwesomeCoroutineButton(
     coroutineScope: CoroutineScope,
     title: String = "",
     icon: FontAwesomeIcon? = null,
-    onAction: suspend Button.() -> Unit
+    onAction: suspend Button.() -> Unit,
 ): Button {
     return fontAwesomeButton(title, icon) {
         coroutineScope.launch {

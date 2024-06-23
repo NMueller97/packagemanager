@@ -8,16 +8,17 @@ import javafx.stage.Window
 import kotlinx.coroutines.Job
 
 class CancelableProgressDialog(owner: Window) : ProgressDialog(owner) {
-
     var cancelableJob: Job? = null
 
-    private val closeButton = fontAwesomeButton("Close", FA_TIMES) {
-        cancelableJob?.cancel()
-    }
+    private val closeButton =
+        fontAwesomeButton("Close", FA_TIMES) {
+            cancelableJob?.cancel()
+        }
 
-    private val buttonLayout = HBox(closeButton).apply {
-        alignment = Pos.BASELINE_RIGHT
-    }
+    private val buttonLayout =
+        HBox(closeButton).apply {
+            alignment = Pos.BASELINE_RIGHT
+        }
 
     init {
         contentLayout.children.add(buttonLayout)

@@ -15,12 +15,12 @@ import kotlin.reflect.KProperty1
 
 class PackageListView(
     app: PackageManagerApplication,
-    selectedDevice: ObservableValue<Device>
+    selectedDevice: ObservableValue<Device>,
 ) : ApplicationView(app) {
-
-    private val rootItem = TreeItem<App>().apply {
-        isExpanded = true
-    }
+    private val rootItem =
+        TreeItem<App>().apply {
+            isExpanded = true
+        }
 
     private val dataPackagesItem =
         TreeItem<App>(FakeAndroidApp("Data")).apply {
@@ -43,11 +43,12 @@ class PackageListView(
             rootItem.children.add(this)
         }
 
-    override val root = TreeTableView<App>().apply {
-        column("Name", App::name)
-        columnResizePolicy = TreeTableView.CONSTRAINED_RESIZE_POLICY
-        placeholder = ProgressIndicator()
-    }
+    override val root =
+        TreeTableView<App>().apply {
+            column("Name", App::name)
+            columnResizePolicy = TreeTableView.CONSTRAINED_RESIZE_POLICY
+            placeholder = ProgressIndicator()
+        }
 
     val selectedPackage = root.selectionModel.selectedItemProperty().mapTo { it?.value }
 
@@ -79,7 +80,7 @@ class PackageListView(
 
     private fun <T : Any?> TreeTableView<App>.column(
         title: String,
-        prop: KProperty1<App, T>
+        prop: KProperty1<App, T>,
     ) {
         val column = TreeTableColumn<App, T>(title)
         column.cellValueFactory = Callback { prop.get(it.value.value).observable() }

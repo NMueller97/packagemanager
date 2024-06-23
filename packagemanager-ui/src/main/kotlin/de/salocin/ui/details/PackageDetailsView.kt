@@ -19,9 +19,8 @@ class PackageDetailsView(
     app: PackageManagerApplication,
     owner: Window,
     hostServices: HostServices,
-    selectedPackage: ObservableValue<App?>
+    selectedPackage: ObservableValue<App?>,
 ) : ApplicationView(app) {
-
     private val buttons = PackageDetailsButtons(app, owner, hostServices, selectedPackage)
     private val nameTextField = PackageDetailsTextField("Name")
     private val pathsList = PackageDetailsPathList("Paths")
@@ -31,9 +30,10 @@ class PackageDetailsView(
     private val contentNoDetails = Text("No details for selected package")
     private val contentPane = StackPane(content, contentLoader, contentNoDetails)
 
-    override val root = TitledPane("Details", contentPane).apply {
-        isCollapsible = false
-    }
+    override val root =
+        TitledPane("Details", contentPane).apply {
+            isCollapsible = false
+        }
 
     init {
         selectedPackage.addListener { _, _, newValue ->

@@ -1,6 +1,6 @@
 # Package Manager
 
-Android Package Manager written in Kotlin. Quickly explore, download, or install APKs and Android App Bundles. Lets you quickly manager all your Android apps on your desktop PC.
+Android Package Manager written in Kotlin. Quickly explore, download, or install APKs and Android App Bundles. Lets you quickly manage all your Android apps on your desktop PC.
 
 Fully async and high performant, making use of Kotlin's coroutines and JavaFX.
 

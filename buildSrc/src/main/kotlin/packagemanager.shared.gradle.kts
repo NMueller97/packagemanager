@@ -2,6 +2,7 @@ plugins {
     kotlin("jvm")
     id("org.jlleitschuh.gradle.ktlint")
     id("se.solrike.sonarlint")
+    id("org.sonarqube")
 }
 
 group = "de.salocin"
@@ -21,3 +22,9 @@ kotlin {
     }
 }
 
+sonarqube {
+    properties {
+        property("sonar.projectName", "Package Manager")
+        property("sonar.projectKey", "package-manager")
+    }
+}

@@ -2,7 +2,6 @@ plugins {
     kotlin("jvm")
     id("org.jlleitschuh.gradle.ktlint")
     id("se.solrike.sonarlint")
-    id("org.sonarqube")
 }
 
 group = "de.salocin"
@@ -19,12 +18,5 @@ dependencies {
 kotlin {
     target {
         version = JavaVersion.VERSION_17
-    }
-}
-
-sonarqube {
-    properties {
-        property("sonar.projectName", "Package Manager")
-        property("sonar.projectKey", "package-manager")
     }
 }

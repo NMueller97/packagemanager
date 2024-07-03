@@ -18,4 +18,6 @@ jobs:
         distribution: 'temurin'
     - name: Build with Gradle Wrapper
       run: ./gradlew build
+    - name: Sonarqube
+      run: ./gradle sonar -Dsonar.token=${{ secrets.SONARQUBE_TOKEN }}
 

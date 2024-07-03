@@ -27,6 +27,44 @@ To run execute the following command:
 
 Make sure you have a working ADB installation and the `adb` command is in your `PATH`.
 
+Install using the following commands:
+<details>
+  <summary><b>Debian based Distro</b></summary>
+  
+  ```sh
+  sudo apt-get install android-tools-adb 
+  ```
+</details>
+<details>
+  <summary><b>Arch based Distro</b></summary>
+  
+  ```sh
+  sudo pacman -S android-tools
+  ```
+</details>
+<details>
+  <summary><b>Fedora/SUSE</b></summary>
+  
+  ```sh
+  sudo dnf install android-tools
+  ```
+</details>
+<details>
+  <summary><b>Nix</b></summary>
+  
+  ```sh
+  nix-env -i android-tools
+  ```
+</details>
+<details>
+  <summary><b>Windows</b></summary>
+  
+  ```sh
+  winget install AndroidSDK.AndroidCommandLineTools
+  ```
+</details>
+
+
 ## Screenshots
 ![](resources/2024-06-23-173818_hyprshot.png)
 ![](resources/2024-06-23-173727_hyprshot.png)

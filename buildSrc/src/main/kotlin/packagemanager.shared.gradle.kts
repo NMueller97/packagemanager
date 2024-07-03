@@ -1,8 +1,14 @@
+import io.gitlab.arturbosch.detekt.Detekt
+import io.gitlab.arturbosch.detekt.DetektCreateBaselineTask
+
 plugins {
     kotlin("jvm")
     id("org.jlleitschuh.gradle.ktlint")
     id("se.solrike.sonarlint")
+    id("io.gitlab.arturbosch.detekt")
 }
+
+val javaVersion = JavaVersion.VERSION_17
 
 repositories {
     mavenCentral()
@@ -14,6 +20,21 @@ dependencies {
 
 kotlin {
     target {
-        version = JavaVersion.VERSION_17
+        version = javaVersion
     }
 }
+
+detekt {
+    buildUponDefaultConfig = true
+    allRules = false
+    config.setFrom("$rootDir/detekt.yml")
+}
+
+tasks.withType<Detekt>().configureEach {
+    jvmTarget = javaVersion.majorVersion
+}
+
+tasks.withType<DetektCreateBaselineTask>().configureEach {
+    jvmTarget = javaVersion.majorVersion
+}
+

@@ -61,6 +61,8 @@ fun String.parseAsFileType(): FileType? {
     }
 }
 
+const val WAIT_TIME = 500L
+
 suspend inline fun createTemporaryDirectory(crossinline block: suspend (TemporaryDirectory) -> Unit) {
     coroutineScope {
         val createDirectoryJob: Deferred<Path> =
@@ -74,7 +76,7 @@ suspend inline fun createTemporaryDirectory(crossinline block: suspend (Temporar
             block(directory)
         } finally {
             withContext(NonCancellable) {
-                delay(500L)
+                delay(WAIT_TIME)
 
                 launch(Dispatchers.IO) {
                     directory.path.deleteRecursive()

@@ -18,6 +18,8 @@ import kotlinx.coroutines.launch
 import java.io.File
 import java.nio.file.Path
 
+private const val ROOT_PADDING = 10.0
+
 class PackageDetailsButtons(
     app: PackageManagerApplication,
     private val owner: Window,
@@ -36,7 +38,7 @@ class PackageDetailsButtons(
     override val root =
         HBox(downloadButton).apply {
             alignment = Pos.BASELINE_RIGHT
-            padding = Insets(10.0)
+            padding = Insets(ROOT_PADDING)
         }
 
     private suspend fun onDownload(dialog: ProgressDialog) {

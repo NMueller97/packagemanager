@@ -18,7 +18,9 @@ import javafx.stage.FileChooser
 import javafx.stage.Window
 import kotlinx.coroutines.launch
 import java.io.File
-import java.nio.file.Path
+
+private const val ROOT_SPACING = 5.0
+private const val ROOT_PADDING = 10.0
 
 class ToolbarView(app: PackageManagerApplication, private val owner: Window) : ApplicationView(app) {
     private val devicesComboBox =
@@ -44,8 +46,8 @@ class ToolbarView(app: PackageManagerApplication, private val owner: Window) : A
 
     override val root =
         HBox().apply {
-            spacing = 5.0
-            padding = Insets(10.0)
+            spacing = ROOT_SPACING
+            padding = Insets(ROOT_PADDING)
 
             children.add(devicesComboBox)
             children.add(refreshButton)
@@ -87,13 +89,15 @@ class ToolbarView(app: PackageManagerApplication, private val owner: Window) : A
 
         if (file != null) {
             dialog.show()
-            installFrom(dialog, file.toPath())
+//            installFrom(dialog, file.toPath())
+            installFrom(dialog)
         }
     }
 
     private suspend fun installFrom(
         dialog: ProgressDialog,
-        target: Path,
+        // TODO
+//        target: Path,
     ) {
         dialog.notifyProgressChange(0)
         dialog.notifyMaxProgressChange(1)

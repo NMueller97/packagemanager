@@ -14,7 +14,7 @@ value class ParsedLine(val value: List<String>) {
             }
         }
 
-        throw IllegalStateException("No constructor found in class $targetClass for ${value.size} String values")
+        error("No constructor found in class $targetClass for ${value.size} String values")
     }
 
     operator fun get(index: Int) = value[index]

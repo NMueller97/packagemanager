@@ -13,6 +13,9 @@ import javafx.stage.Modality
 import javafx.stage.Stage
 import javafx.stage.Window
 
+private const val PROGRESS_BAR_WIDTH = 500.0
+private const val CONTENT_SPACING = 10.0
+
 open class ProgressDialog(owner: Window) : ProgressObserver {
     private val progressProperty = SimpleDoubleProperty(0.0)
     var progress: Double by progressProperty
@@ -23,15 +26,15 @@ open class ProgressDialog(owner: Window) : ProgressObserver {
     private val progressBar =
         ProgressBar().apply {
             progressProperty().bind(progressProperty.divide(maxProgressProperty))
-            prefWidth = 500.0
+            prefWidth = PROGRESS_BAR_WIDTH
         }
 
     private val messageText = Text()
     var message: String by messageText.textProperty()
 
     protected val contentLayout =
-        VBox(10.0, messageText, progressBar).apply {
-            padding = Insets(10.0)
+        VBox(CONTENT_SPACING, messageText, progressBar).apply {
+            padding = Insets(CONTENT_SPACING)
         }
 
     protected val stage =

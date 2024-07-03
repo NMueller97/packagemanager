@@ -4,9 +4,6 @@ plugins {
     id("se.solrike.sonarlint")
 }
 
-group = "de.salocin"
-version = "1.0.0"
-
 repositories {
     mavenCentral()
 }

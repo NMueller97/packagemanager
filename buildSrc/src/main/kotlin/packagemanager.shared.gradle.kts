@@ -1,8 +1,6 @@
-import io.gitlab.arturbosch.detekt.Detekt
-import io.gitlab.arturbosch.detekt.DetektCreateBaselineTask
-
 plugins {
     kotlin("jvm")
+    kotlin("plugin.power-assert")
     id("org.jlleitschuh.gradle.ktlint")
     id("se.solrike.sonarlint")
     id("io.gitlab.arturbosch.detekt")
@@ -16,6 +14,9 @@ repositories {
 
 dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0-RC")
+    testImplementation(kotlin("test"))
+    testImplementation("io.mockk:mockk:1.9.3")
+    testRuntimeOnly("net.bytebuddy:byte-buddy:1.14.18")
 }
 
 kotlin {
@@ -30,11 +31,11 @@ detekt {
     config.setFrom("$rootDir/detekt.yml")
 }
 
-tasks.withType<Detekt>().configureEach {
+tasks.detekt {
     jvmTarget = javaVersion.majorVersion
 }
 
-tasks.withType<DetektCreateBaselineTask>().configureEach {
-    jvmTarget = javaVersion.majorVersion
+tasks.test {
+    useJUnitPlatform()
 }
 

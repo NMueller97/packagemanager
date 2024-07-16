@@ -22,10 +22,12 @@ class SystemProcessOutput<T>(
      */
     fun tryRead(): List<T> {
         val list = mutableListOf<T>()
+        var available = inputStream.available()
 
-        while (inputStream.available() > 0) {
-            val bytes = inputStream.readNBytes(maxOf(inputStream.available(), BUFFER_SIZE))
+        while (available > 0) {
+            val bytes = inputStream.readNBytes(maxOf(available, BUFFER_SIZE))
             read(bytes, list)
+            available = inputStream.available()
         }
 
         return list
@@ -40,10 +42,7 @@ class SystemProcessOutput<T>(
         return list
     }
 
-    private fun read(
-        bytes: ByteArray,
-        parsedLines: MutableList<T>,
-    ) {
+    private fun read(bytes: ByteArray, parsedLines: MutableList<T>) {
         for (byte in bytes) {
             outputPipe?.print(byte.toInt().toChar())
 

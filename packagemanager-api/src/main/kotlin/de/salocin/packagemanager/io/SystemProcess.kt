@@ -32,17 +32,4 @@ open class SystemProcess<T>(
             return@runInterruptible parsedLines
         }
     }
-
-    companion object {
-        fun build(arguments: List<String>): SystemProcess<String> {
-            return SystemProcess(arguments)
-        }
-
-        fun <T> build(
-            arguments: List<String>,
-            stdoutParser: OutputParser<T>,
-        ): SystemProcess<T> {
-            return SystemProcess(arguments, stdoutParser)
-        }
-    }
 }

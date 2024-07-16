@@ -4,6 +4,7 @@ plugins {
     id("org.jlleitschuh.gradle.ktlint")
     id("se.solrike.sonarlint")
     id("io.gitlab.arturbosch.detekt")
+    jacoco
 }
 
 val javaVersion = JavaVersion.VERSION_17
@@ -37,5 +38,11 @@ tasks.detekt {
 
 tasks.test {
     useJUnitPlatform()
+    finalizedBy(tasks.jacocoTestReport)
 }
 
+tasks.jacocoTestReport {
+    reports {
+        xml.required.set(true)
+    }
+}

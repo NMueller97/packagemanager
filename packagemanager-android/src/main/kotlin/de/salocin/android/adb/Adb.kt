@@ -50,7 +50,7 @@ object Adb {
         val isSystem = basePath.startsWith("/system")
         val isVendor =
             basePath.startsWith("/system_ext") || basePath.startsWith("/vendor") ||
-                    basePath.startsWith("/product")
+                basePath.startsWith("/product")
 
         return when {
             isData -> AndroidAppType.DATA

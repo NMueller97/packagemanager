@@ -10,7 +10,6 @@ import java.io.PrintStream
 import kotlin.test.Test
 
 class SystemProcessOutputTest {
-
     private lateinit var inputStream: InputStream
     private lateinit var outputParser: OutputParser<String>
     private lateinit var outputPipe: PrintStream
@@ -62,7 +61,6 @@ class SystemProcessOutputTest {
         assertEquals(listOf("parsedLine1", "parsedLine2", "parsedLine3", "parsedLine4"), result)
     }
 
-
     @Test
     fun `readRemaining should return parsed lines after end of stream`() {
         val testBytes = "line1\nline2\n".toByteArray()
@@ -93,5 +91,4 @@ class SystemProcessOutputTest {
         verify { outputPipe.print('1') }
         verify { outputPipe.print('\n') }
     }
-
 }

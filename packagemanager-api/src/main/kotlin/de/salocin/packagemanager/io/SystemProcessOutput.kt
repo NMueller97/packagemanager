@@ -42,7 +42,10 @@ class SystemProcessOutput<T>(
         return list
     }
 
-    private fun read(bytes: ByteArray, parsedLines: MutableList<T>) {
+    private fun read(
+        bytes: ByteArray,
+        parsedLines: MutableList<T>,
+    ) {
         for (byte in bytes) {
             outputPipe?.print(byte.toInt().toChar())
 

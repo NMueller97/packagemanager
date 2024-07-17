@@ -21,10 +21,7 @@ data class FakeAndroidDevice(
         // nothing to do
     }
 
-    override suspend fun installApp(
-        path: Path,
-        observer: ProgressObserver?,
-    ) {
+    override suspend fun installApp(path: Path, observer: ProgressObserver?) {
         // nothing to do
     }
 

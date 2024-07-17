@@ -50,10 +50,7 @@ data class AndroidApp(
         return AndroidAppBundle(directory, appFiles)
     }
 
-    override suspend fun downloadAsSingleFile(
-        path: Path,
-        observer: ProgressObserver?,
-    ) {
+    override suspend fun downloadAsSingleFile(path: Path, observer: ProgressObserver?) {
         val bundle = download()
         bundle.path.listDirectoryEntries().zip(ZipFile(path))
     }

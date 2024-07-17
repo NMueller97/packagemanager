@@ -14,8 +14,5 @@ interface Device {
 
     suspend fun refreshApps(observer: ProgressObserver? = null)
 
-    suspend fun installApp(
-        path: Path,
-        observer: ProgressObserver? = null,
-    )
+    suspend fun installApp(path: Path, observer: ProgressObserver? = null)
 }

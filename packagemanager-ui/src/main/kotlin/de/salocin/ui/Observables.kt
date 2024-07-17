@@ -19,20 +19,10 @@ fun <T : Any?> T.observableList(): ObservableList<T> = FXCollections.singletonOb
 
 fun <T : Any?> List<T>.observableList(): ObservableList<T> = FXCollections.observableList(this)
 
-operator fun ObservableDoubleValue.getValue(
-    thisRef: Any?,
-    prop: KProperty<*>,
-): Double = get()
+operator fun ObservableDoubleValue.getValue(thisRef: Any?, prop: KProperty<*>): Double = get()
 
-operator fun <T : Any?> ObservableValue<T>.getValue(
-    thisRef: Any?,
-    prop: KProperty<*>,
-): T = value
+operator fun <T : Any?> ObservableValue<T>.getValue(thisRef: Any?, prop: KProperty<*>): T = value
 
-operator fun <T : Any?> WritableValue<T>.setValue(
-    thisRef: Any?,
-    prop: KProperty<*>,
-    value: T,
-) {
+operator fun <T : Any?> WritableValue<T>.setValue(thisRef: Any?, prop: KProperty<*>, value: T) {
     this.value = value
 }

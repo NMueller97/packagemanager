@@ -3,16 +3,18 @@ package de.salocin.packagemanager.io
 import java.io.InputStream
 import java.io.PrintStream
 import java.nio.ByteBuffer
-import java.nio.charset.StandardCharsets
+
+private const val BUFFER_SIZE = 8 * 1024
 
 /**
- * A output from a system process from the [inputStream], which might be piped to a print stream with [outputPipe].
+ * An output from a system process from the [inputStream], which might be piped to a print stream with [outputPipe].
  * The output lines are parsed according to the supplied [outputParser], if available.
  */
 class SystemProcessOutput<T>(
     private val inputStream: InputStream,
     private val outputParser: OutputParser<T>?,
     private val outputPipe: PrintStream?,
+    private val encoding: OutputEncoding = OutputEncoding(),
 ) {
     private val buffer = ByteBuffer.allocate(BUFFER_SIZE)
 
@@ -20,64 +22,62 @@ class SystemProcessOutput<T>(
      * Tries to read the next available bytes, without blocking the current thread.
      * It will not wait for more bytes if no bytes are available.
      */
-    fun tryRead(): List<T> {
+    fun readAvailable(): List<T> {
         val list = mutableListOf<T>()
-        var available = inputStream.available()
 
-        while (available > 0) {
-            val bytes = inputStream.readNBytes(maxOf(available, BUFFER_SIZE))
-            read(bytes, list)
-            available = inputStream.available()
-        }
+        do {
+            val moreBytesAvailable = readAvailableBytes(list)
+        } while (moreBytesAvailable)
 
         return list
+    }
+
+    private fun readAvailableBytes(list: MutableList<T>): Boolean {
+        val available = inputStream.available()
+
+        if (available <= 0) {
+            return false
+        }
+
+        val bytes = inputStream.readNBytes(maxOf(available, BUFFER_SIZE))
+        list.addAll(parseBytes(bytes))
+        return true
     }
 
     /**
      * Reads all remaining bytes from the process output. This method will block until an end of stream is reached.
      */
     fun readRemaining(): List<T> {
-        val list = mutableListOf<T>()
-        read(inputStream.readAllBytes(), list)
-        return list
+        return parseBytes(inputStream.readAllBytes())
     }
 
-    private fun read(
-        bytes: ByteArray,
-        parsedLines: MutableList<T>,
-    ) {
+    private fun parseBytes(bytes: ByteArray): List<T> {
+        val lines = mutableListOf<T>()
+
         for (byte in bytes) {
             outputPipe?.print(byte.toInt().toChar())
 
-            if (outputParser != null) {
-                if (byte.toInt() == '\n'.code) {
-                    finishLine(parsedLines, outputParser)
-                } else if (buffer.position() < buffer.limit()) {
-                    buffer.put(byte)
-                }
+            if (byte.toInt() == '\n'.code) {
+                parseLine()?.let { lines.add(it) }
+            } else {
+                buffer.put(byte)
             }
         }
+
+        return lines
     }
 
-    private fun finishLine(
-        list: MutableList<T>,
-        parser: OutputParser<T>,
-    ) {
+    private fun parseLine(): T? = outputParser?.let { parser ->
         val bytes = ByteArray(buffer.position())
-        val endIndex = if (isWindowsLineFeed) buffer.position() - 1 else buffer.position()
+        val endIndex = buffer.position() - encoding.lineEnding.length + 1
 
         for (i in 0 until endIndex) {
             bytes[i] = buffer[i]
         }
 
-        val line = String(bytes, StandardCharsets.UTF_8).replace(0.toChar().toString(), "")
-        parser.parseLine(line)?.let { parsedLine -> list += parsedLine }
+        val line = String(bytes, encoding.charset).replace(0.toChar().toString(), "")
+        val parsedLine = parser.parseLine(line)
         buffer.position(0)
-    }
-
-    companion object {
-        private const val BUFFER_SIZE = 8 * 1024
-
-        private val isWindowsLineFeed = System.lineSeparator() == "\r\n"
+        return parsedLine
     }
 }

@@ -67,11 +67,7 @@ class PackageDetailsButtons(
         }
     }
 
-    private suspend fun download(
-        dialog: ProgressDialog,
-        pack: App,
-        target: Path,
-    ) {
+    private suspend fun download(dialog: ProgressDialog, pack: App, target: Path) {
         pack.download(observer = dialog)
         dialog.close()
         hostServices.showDocument(target.parent.toUri().toString())

@@ -21,19 +21,12 @@ object Adb {
         return process.execute()
     }
 
-    suspend fun pull(
-        device: AndroidDevice,
-        devicePath: DevicePath<AndroidDevice>,
-        target: Path,
-    ) {
+    suspend fun pull(device: AndroidDevice, devicePath: DevicePath<AndroidDevice>, target: Path) {
         val process = AdbProcess.build(device, listOf("pull", "-a", devicePath.path, target.toString()))
         process.execute()
     }
 
-    suspend fun install(
-        device: AndroidDevice,
-        files: Array<Path>,
-    ) {
+    suspend fun install(device: AndroidDevice, files: Array<Path>) {
         val paths = files.map { it.toString() }.toTypedArray()
         val process = AdbProcess.build(device, listOf("install-multiple", *paths))
         process.execute()
@@ -60,10 +53,7 @@ object Adb {
         }
     }
 
-    suspend fun packagePaths(
-        device: AndroidDevice,
-        name: String,
-    ): List<AndroidDevicePath> {
+    suspend fun packagePaths(device: AndroidDevice, name: String): List<AndroidDevicePath> {
         val parser =
             RegexOutputParser(stripPackagePrefixRegex).takeGroup(1).mapEachMatchTo {
                 AndroidDevicePath(device, it, FileType.Regular)
@@ -72,11 +62,7 @@ object Adb {
         return process.execute()
     }
 
-    suspend fun <T> shell(
-        device: AndroidDevice,
-        parser: OutputParser<T>,
-        vararg command: String,
-    ): List<T> {
+    suspend fun <T> shell(device: AndroidDevice, parser: OutputParser<T>, vararg command: String): List<T> {
         val process = AdbProcess.build(device, listOf("shell", *command), parser)
         return process.execute()
     }

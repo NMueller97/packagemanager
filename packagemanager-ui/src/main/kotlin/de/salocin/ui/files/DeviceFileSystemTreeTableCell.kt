@@ -13,10 +13,7 @@ class DeviceFileSystemTreeTableCell : TreeTableCell<DevicePath<Device>, String?>
     private val regularIcon = fontAwesomeIcon(FA_FILE_ALT)
     private val folderIcon = fontAwesomeIcon(FA_FOLDER)
 
-    override fun updateItem(
-        item: String?,
-        empty: Boolean,
-    ) {
+    override fun updateItem(item: String?, empty: Boolean) {
         super.updateItem(item, empty)
 
         val value = treeTableRow?.treeItem?.value

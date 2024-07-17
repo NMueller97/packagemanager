@@ -20,10 +20,7 @@ data class AndroidDevice(override val model: String, override val serialNumber: 
         apps = Adb.packages(this)
     }
 
-    override suspend fun installApp(
-        path: Path,
-        observer: ProgressObserver?,
-    ) {
+    override suspend fun installApp(path: Path, observer: ProgressObserver?) {
         TODO("Not yet implemented")
     }
 

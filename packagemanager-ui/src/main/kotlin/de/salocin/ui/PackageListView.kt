@@ -78,10 +78,7 @@ class PackageListView(
         }
     }
 
-    private fun <T : Any?> TreeTableView<App>.column(
-        title: String,
-        prop: KProperty1<App, T>,
-    ) {
+    private fun <T : Any?> TreeTableView<App>.column(title: String, prop: KProperty1<App, T>) {
         val column = TreeTableColumn<App, T>(title)
         column.cellValueFactory = Callback { prop.get(it.value.value).observable() }
         columns.add(column)

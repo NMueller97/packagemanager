@@ -7,11 +7,7 @@ import javafx.scene.text.Text
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-fun fontAwesomeButton(
-    title: String = "",
-    icon: FontAwesomeIcon? = null,
-    onAction: Button.() -> Unit,
-): Button {
+fun fontAwesomeButton(title: String = "", icon: FontAwesomeIcon? = null, onAction: Button.() -> Unit): Button {
     return Button(title, icon?.let { fontAwesomeIcon(it) }).apply {
         setOnAction {
             onAction()
@@ -19,11 +15,7 @@ fun fontAwesomeButton(
     }
 }
 
-fun fontAwesomeMenuItem(
-    title: String = "",
-    icon: FontAwesomeIcon? = null,
-    onAction: MenuItem.() -> Unit,
-): MenuItem {
+fun fontAwesomeMenuItem(title: String = "", icon: FontAwesomeIcon? = null, onAction: MenuItem.() -> Unit): MenuItem {
     return MenuItem(title, icon?.let { fontAwesomeIcon(it) }).apply {
         setOnAction {
             onAction()

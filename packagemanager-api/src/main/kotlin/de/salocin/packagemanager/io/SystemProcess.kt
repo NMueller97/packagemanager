@@ -22,8 +22,8 @@ open class SystemProcess<T>(
             val stderr = SystemProcessOutput(process.errorStream, stderrParser, stderrPipe)
 
             while (process.isAlive) {
-                parsedLines += stdout.tryRead()
-                parsedLines += stderr.tryRead()
+                parsedLines += stdout.readAvailable()
+                parsedLines += stderr.readAvailable()
             }
 
             parsedLines += stdout.readRemaining()
